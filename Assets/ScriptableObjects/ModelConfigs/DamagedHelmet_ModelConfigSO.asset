@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3fc958f662e8e4699138adba881256, type: 3}
+  m_Name: DamagedHelmet_ModelConfigSO
+  m_EditorClassIdentifier: 
+  Model: {fileID: 7872096941500528442, guid: 1d6dc142aac8f2240938309e26d80a57, type: 3}
+  BaseMapURL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR%20(Base%20Color).png?alt=media&token=454bf4a2-cf19-4de2-bef6-47dce562a46a
+  EmissiveURL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR
+    (Emissive).png?alt=media&token=81bec0e1-3a05-4b59-a640-61b4bb528cc7
+  MetallicRoughnessURL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR%20(Metallic%20Roughness).png?alt=media&token=28146c1c-e58e-40ad-b21c-eed27de95ebd
+  NormalURL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR%20(Normal).png?alt=media&token=4450b7d1-9a16-4143-8007-2ea1ee6c351e
+  OcclusionURL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR%20(Occlusion).png?alt=media&token=91d2e1a6-50e0-4c0d-8bf0-fbf112a50ebc
