@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TextureConfig: {fileID: 11400000, guid: d56e06062b92f7d41b4e5c84185a3710, type: 2}
+  ShaderName: Standard
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0

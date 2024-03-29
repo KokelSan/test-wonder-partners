@@ -66,8 +66,6 @@ public class TextureDownloadManager : MonoBehaviour
                 {
                     File.Delete(path);
                     File.Delete(path + ".meta"); // No exception thrown if file doesn't exist, no additional try catch needed
-                    
-                    // Debug.Log($"File deleted: {path}");
                 }
                 catch (Exception e)
                 {

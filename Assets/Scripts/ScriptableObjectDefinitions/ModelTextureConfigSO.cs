@@ -28,11 +28,12 @@ public class TextureDef
     [HideInInspector] public string FullPath;
 } 
 
-[CreateAssetMenu(menuName = "Wonder Partner's/New Model Config",  fileName = "_ModelTextureConfigSO")]
+[CreateAssetMenu(menuName = "Wonder Partner's/Model Texture Config/New Config",  fileName = "_ModelTextureConfigSO")]
 public class ModelTextureConfigSO : ScriptableObject
 {
     public List<TextureDef> Textures;
     public string SavePath;
+    
     [Tooltip("The final name of the downloaded texture will be TexturesPrefixName + TextureType + Format. For example: DamagedHelmet_BaseMap.png")]
     public string TexturesPrefixName;
     
