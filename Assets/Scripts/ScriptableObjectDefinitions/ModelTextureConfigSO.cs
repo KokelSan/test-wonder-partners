@@ -11,17 +11,24 @@ public enum TextureType
     Occlusion
 }
 
-public enum Format
+public enum ImageFormat
 {
     png,
     jpg
+}
+
+public enum PackingMethod
+{
+    Standard,
+    glTF2,
 }
 
 [Serializable]
 public class TextureDef
 {
     public TextureType Type;
-    public Format Format;
+    public ImageFormat Format;
+    public PackingMethod PackingMethod;
     public string URL;
 
     public string PathEnd => $"{Type}.{Format}";

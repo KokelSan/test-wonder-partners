@@ -6,6 +6,7 @@ using UnityEngine;
 public struct ShaderTextureProperty
 {
     public TextureType TextureType;
+    public PackingMethod PackingMethod;
     public string PropertyName;
 }
 
@@ -16,6 +17,5 @@ public struct ShaderTextureProperty
 public class ShaderDescriptionTableSO : ScriptableObject
 {
     public string Name;
-
     public List<ShaderTextureProperty> TextureProperties;
 }

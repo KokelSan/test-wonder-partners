@@ -123,6 +123,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &478277804
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 168517609708544105, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8514585662509323486, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
+      propertyPath: m_Name
+      value: DamagedHelmet_Downloaded
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 1dc14fb3133c2e847b53f5e2b3ea3a34, type: 3}
 --- !u!1 &630963300 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7872096941500528442, guid: 1d6dc142aac8f2240938309e26d80a57, type: 3}
@@ -141,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TextureConfig: {fileID: 11400000, guid: d56e06062b92f7d41b4e5c84185a3710, type: 2}
-  ShaderName: Standard
+  ShaderDescription: {fileID: 11400000, guid: 13af9e2f695772c4d93c058e42e74c3d, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +393,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2484745630453935688, guid: 1d6dc142aac8f2240938309e26d80a57, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 5564106923341902045, guid: 1d6dc142aac8f2240938309e26d80a57, type: 3}
     - target: {fileID: 2399668579788672108, guid: 1d6dc142aac8f2240938309e26d80a57, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -457,3 +518,4 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1946163662}
   - {fileID: 1955332894}
+  - {fileID: 478277804}

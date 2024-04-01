@@ -1,5 +1,18 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+
+public class DownloadedTexture
+{
+    public TextureDef TextureDef;
+    public Texture2D Texture;
+
+    public DownloadedTexture(TextureDef textureDef, Texture2D texture)
+    {
+        TextureDef = textureDef;
+        Texture = texture;
+    }
+}
 
 public class MaterialCreator : MonoBehaviour
 {
@@ -7,7 +20,7 @@ public class MaterialCreator : MonoBehaviour
     public ShaderDescriptionTableSO ShaderDescription;
 
     private List<TextureDef> _downloadingTextures = new List<TextureDef>();
-    private Dictionary<TextureType, Texture> _downloadedTextures = new Dictionary<TextureType, Texture>();
+    private Dictionary<TextureType, DownloadedTexture> _downloadedTextures = new Dictionary<TextureType, DownloadedTexture>();
 
     private bool AllTexturesAreDownloaded => _downloadingTextures.Count == 0;
     
@@ -21,10 +34,10 @@ public class MaterialCreator : MonoBehaviour
         }
     }
 
-    private void OnTextureDownloaded(TextureDef textureDef, Texture downloadedTexture)
+    private void OnTextureDownloaded(TextureDef textureDef, Texture2D downloadedTexture)
     {
         _downloadingTextures.Remove(textureDef);
-        _downloadedTextures.Add(textureDef.Type, downloadedTexture);
+        _downloadedTextures.Add(textureDef.Type, new DownloadedTexture(textureDef, downloadedTexture));
         
         if (AllTexturesAreDownloaded)
         {
@@ -52,22 +65,27 @@ public class MaterialCreator : MonoBehaviour
             return;
         }
         
-        Material material = new Material(shader);
-
-        foreach (var shaderTextureProperty in ShaderDescription.TextureProperties)
+        if (!TryGetComponent(out Renderer renderer))
         {
-            if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out var texture))
+            Debug.LogError("This model has no renderer to receive the material");
+            return;
+        }
+        
+        renderer.material = new Material(shader);
+        
+        foreach (ShaderTextureProperty shaderTextureProperty in ShaderDescription.TextureProperties)
+        {
+            if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out DownloadedTexture texture))
             {
-                if (material.HasTexture(shaderTextureProperty.PropertyName))
+                if (renderer.material.HasTexture(shaderTextureProperty.PropertyName))
                 {
-                    material.SetTexture(shaderTextureProperty.PropertyName, texture);
+                    // renderer.material.EnableKeyword("");
+                    Texture2D finalTexture = TexturePackingService.ComputeTexture(texture.Texture, texture.TextureDef.PackingMethod, shaderTextureProperty.PackingMethod);
+                    renderer.material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
                 }
             }
         }
 
-        if (TryGetComponent(out Renderer renderer))
-        {
-            renderer.material = material;
-        }
+        
     }
 }
