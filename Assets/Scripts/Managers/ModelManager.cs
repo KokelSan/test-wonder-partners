@@ -36,6 +36,10 @@ public class ModelManager : MonoBehaviour
 
         if(_currentModel != null) _currentModel.Destroy();
         _currentModel = Instantiate(modelPrefab, transform);
+        if (_currentModel.TryGetComponent(out MaterialCreator materialCreator))
+        {
+            materialCreator.StartMaterialCreation(() => _currentModel.Show());
+        }
 
         List<ButtonCreationRequest> requests = new List<ButtonCreationRequest>();
         foreach (var view in _currentModel.Views)

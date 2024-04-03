@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -21,33 +22,41 @@ public class MaterialCreator : MonoBehaviour
 
     private List<TextureDef> _downloadingTextures = new List<TextureDef>();
     private Dictionary<TextureType, DownloadedTexture> _downloadedTextures = new Dictionary<TextureType, DownloadedTexture>();
+    private int _downloadFailsNb = 0;
+    private Action _onMaterialCreated;
 
-    private bool AllTexturesAreDownloaded => _downloadingTextures.Count == 0;
+    private bool DownloadComplete => _downloadingTextures.Count == 0;
     
-    private void Start()
+    public void StartMaterialCreation(Action onMaterialCreated)
     {
         foreach (TextureDef textureDef in TextureConfig.Textures)
         {
             textureDef.FullPath = TextureConfig.CommonPath + textureDef.PathEnd;
             _downloadingTextures.Add(textureDef);
-            TextureDownloadManager.Instance.DownloadTexture(textureDef, OnTextureDownloaded, OnDownloadFailed);
+            TextureDownloadManager.Instance.DownloadTexture(textureDef, OnTextureDownloaded);
         }
+        _onMaterialCreated = onMaterialCreated;
     }
 
-    private void OnTextureDownloaded(TextureDef textureDef, Texture2D downloadedTexture)
+    private void OnTextureDownloaded(TextureDef textureDef, Texture2D downloadedTexture, string errorMsg)
     {
+        if (downloadedTexture == null)
+        {
+            Debug.LogError($"Download of texture '{textureDef.Type}' failed: {errorMsg}. \nURL: {textureDef.URL}");
+            _downloadFailsNb++;
+        }
+        else
+        {
+            Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}");
+        }
+
         _downloadingTextures.Remove(textureDef);
         _downloadedTextures.Add(textureDef.Type, new DownloadedTexture(textureDef, downloadedTexture));
         
-        if (AllTexturesAreDownloaded)
+        if (DownloadComplete)
         {
             CreateMaterial();
         }
-    }
-
-    private void OnDownloadFailed(TextureDef textureDef, string errorMsg)
-    {
-        Debug.LogError($"Download failed: {errorMsg}. \nURL: {textureDef.URL}");
     }
 
     private void CreateMaterial()
@@ -75,16 +84,36 @@ public class MaterialCreator : MonoBehaviour
         
         foreach (ShaderTextureProperty shaderTextureProperty in ShaderDescription.TextureProperties)
         {
-            if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out DownloadedTexture texture))
+            if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out DownloadedTexture downloadedTexture))
             {
+                if (downloadedTexture.Texture == null)
+                {
+                    continue;
+                }
+
                 if (renderer.material.HasTexture(shaderTextureProperty.PropertyName))
                 {
                     // renderer.material.EnableKeyword("");
-                    Texture2D finalTexture = TexturePackingService.ComputeTexture(texture.Texture, texture.TextureDef.PackingMethod, shaderTextureProperty.PackingMethod);
+                    Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture.Texture, downloadedTexture.TextureDef.PackingMethod, shaderTextureProperty.PackingMethod);
                     renderer.material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
                 }
             }
         }
-        
+
+        if (_downloadFailsNb == TextureConfig.Textures.Count)
+        {
+            Debug.LogError($"Material creation error: all textures download failed.");
+        }
+        else if (_downloadFailsNb > 0)
+        {
+            Debug.LogError($"Material creation ended with {_downloadFailsNb} textures download fails.");
+        }
+        else
+        {
+            Debug.Log($"Textures successfully downloaded, material created.");
+        }
+
+        _onMaterialCreated?.Invoke();
+        _onMaterialCreated = null;
     }
 }

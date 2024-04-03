@@ -23,12 +23,12 @@ public class TextureDownloadManager : MonoBehaviour
         Destroy(this);
     }
 
-    public void DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D> onDownloadSucceeded, Action<TextureDef, string> onDownloadFailed)
+    public void DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
     {
-        StartCoroutine(Download(textureDef, onDownloadSucceeded, onDownloadFailed));
+        StartCoroutine(Download(textureDef, onDownloadComplete));
     }
 
-    private IEnumerator Download(TextureDef textureDef, Action<TextureDef, Texture2D> onDownloadSucceeded, Action<TextureDef, string> onDownloadFailed)
+    private IEnumerator Download(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
     {
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(textureDef.URL))
         {
@@ -36,14 +36,14 @@ public class TextureDownloadManager : MonoBehaviour
 
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
-                onDownloadFailed?.Invoke(textureDef, webRequest.error);
+                onDownloadComplete?.Invoke(textureDef, null, webRequest.error);
                 yield break;
             }
             
             Texture2D texture = DownloadHandlerTexture.GetContent(webRequest);
             if (texture == null)
             {
-                onDownloadFailed?.Invoke(textureDef, "downloaded texture is null");
+                onDownloadComplete?.Invoke(textureDef, null, "downloaded texture is null");
                 yield break;
             }
             
@@ -53,11 +53,11 @@ public class TextureDownloadManager : MonoBehaviour
             {
                 File.WriteAllBytes(textureDef.FullPath, textureBytes);
                 _downloadsPaths.Add(textureDef.FullPath);
-                onDownloadSucceeded?.Invoke(textureDef, texture);
+                onDownloadComplete?.Invoke(textureDef, texture, string.Empty);
             }
             catch (Exception e)
             {
-                onDownloadFailed?.Invoke(textureDef, e.Message);
+                onDownloadComplete?.Invoke(textureDef, null, e.Message);
             }
         }
     }
