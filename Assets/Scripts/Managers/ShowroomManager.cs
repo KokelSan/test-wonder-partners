@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,11 +48,21 @@ public class ShowroomManager : MonoBehaviour
 
     private void OnButtonClicked(int buttonIndex)
     {
-        ShowroomNavigationButton button = _instantiatedButtons[buttonIndex];
-        NavigationLabel label = button.Label;
-        _instantiatedButtons[_currentActiveButtonIndex].SetActive(false);
-        button.SetActive(true);
-        _currentActiveButtonIndex = buttonIndex;
-        Models[_currentModelIndex].PerformTransition(label);
-    }    
+        ShowroomNavigationButton oldButton = _instantiatedButtons[_currentActiveButtonIndex];
+        ShowroomNavigationButton newButton = _instantiatedButtons[buttonIndex];
+        Models[_currentModelIndex].PerformTransition(newButton.Label);
+
+        oldButton.SetActive(false);      
+        newButton.SetActive(true);
+
+        _currentActiveButtonIndex = buttonIndex;        
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var button in _instantiatedButtons)
+        {
+            button.ActivationButton.onClick.RemoveAllListeners();           
+        }
+    }
 }

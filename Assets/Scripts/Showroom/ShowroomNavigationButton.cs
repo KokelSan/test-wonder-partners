@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +10,15 @@ public class ShowroomNavigationButton : MonoBehaviour
     private const string HideAnimatorTriggerName = "Hide";
 
     public Button ActivationButton;
-    [SerializeField] private GameObject ActiveElements;
+    public GameObject ActiveElements;
+    public GameObject AnimatedBackground;
     
     [SerializeField] private TMP_Text DisplayNameText;
     [SerializeField] private Image ActiveImage;
     [SerializeField] private Image InactiveImage;
+
+    [SerializeField] private Ease ButtonTransitionEase;
+    [SerializeField] private float ButtonTransitionDuration;
 
     public NavigationLabel Label => _label;
     private NavigationLabel _label;
@@ -39,7 +44,8 @@ public class ShowroomNavigationButton : MonoBehaviour
 
     public void SetActive(bool isActive)
     {
-        ActiveElements.SetActive(isActive);
+        Vector3 targetScale = isActive ? Vector3.one : Vector3.zero;
+        ActiveElements.transform.DOScale(targetScale, ButtonTransitionDuration).SetEase(ButtonTransitionEase);
         ActivationButton.interactable = !isActive;
     }
 }
