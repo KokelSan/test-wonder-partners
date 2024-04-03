@@ -15,17 +15,37 @@ public class ModelView
 public class Model : MonoBehaviour
 {
     public List<ModelView> Views;
-    public float TransitionDuration;
+    public TweenConfig TransitionConfig;
+    public TweenConfig ShowHideConfig;
 
-    public void PerformTransition(ViewLabel navLabel)
+    private void Start()
     {
-        ModelView view = Views.Find(navTransf => navTransf.Label == navLabel);
+        transform.localScale = Vector3.zero;        
+    }
+
+    public void ChangeView(ViewLabel newView)
+    {
+        ModelView view = Views.Find(navTransf => navTransf.Label == newView);
         if (view != null)
         {
-            transform.DOLocalMove(view.Position, TransitionDuration);
-            transform.DOLocalRotate(view.Rotation, TransitionDuration);
+            transform.DOLocalMove(view.Position, TransitionConfig.Duration).SetEase(TransitionConfig.Ease);
+            transform.DOLocalRotate(view.Rotation, TransitionConfig.Duration).SetEase(TransitionConfig.Ease);
             return;
         }
-        Debug.LogError($"Navigation transform not found for label '{navLabel}'");
+        Debug.LogError($"Navigation transform not found for label '{newView}'");
+    }
+
+    public void Show()
+    {
+        transform.DOScale(Vector3.one, ShowHideConfig.Duration).SetEase(ShowHideConfig.Ease);
+    }
+
+    public void Destroy()
+    {
+        transform.DOScale(Vector3.zero, ShowHideConfig.Duration).SetEase(ShowHideConfig.Ease).
+            OnComplete(() =>
+            {
+                Destroy(this);
+            });
     }
 }

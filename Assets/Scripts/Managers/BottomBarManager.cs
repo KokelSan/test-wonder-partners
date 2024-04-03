@@ -22,10 +22,8 @@ public class BottomBarManager : MonoBehaviour
     [SerializeField] private HorizontalLayoutGroup ButtonsParent;
     [SerializeField] private BottomBarButton ButtonPrefab;
 
-    [SerializeField] private Ease ButtonActivationEase;
-    [SerializeField] private Ease ButtonDeactivationEase;
-    [SerializeField] private float ButtonActivationDuration;    
-    [SerializeField] private float ButtonDeactivationDuration;
+    [SerializeField] private TweenConfig ActivationConfig;
+    [SerializeField] private TweenConfig DeactivationConfig;
 
     private List<BottomBarButton> _instantiatedButtons = new List<BottomBarButton>();
     private int _currentActiveButtonIndex = 0;
@@ -54,8 +52,8 @@ public class BottomBarManager : MonoBehaviour
         BottomBarButton oldButton = _instantiatedButtons[_currentActiveButtonIndex];
         BottomBarButton newButton = _instantiatedButtons[buttonIndex];
 
-        oldButton.SetActive(false, ButtonDeactivationEase, ButtonDeactivationDuration);
-        newButton.SetActive(true, ButtonActivationEase, ButtonActivationDuration);
+        oldButton.SetActive(false, DeactivationConfig);
+        newButton.SetActive(true, ActivationConfig);
         onButtonClicked?.Invoke(newButton.Label);
 
         _currentActiveButtonIndex = buttonIndex;

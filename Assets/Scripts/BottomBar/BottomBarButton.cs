@@ -28,10 +28,10 @@ public class BottomBarButton : MonoBehaviour
         SetActive(isActive);
     }
 
-    public void SetActive(bool isActive, Ease transitionEase = Ease.Unset, float transitionDuration = 0)
+    public void SetActive(bool isActive, TweenConfig tweenConfig = default)
     {
         Vector3 targetScale = isActive ? Vector3.one : Vector3.zero;
-        ActiveElements.transform.DOScale(targetScale, transitionDuration).SetEase(transitionEase);
+        ActiveElements.transform.DOScale(targetScale, tweenConfig.Duration).SetEase(tweenConfig.Ease);
         ActivationButton.interactable = !isActive;
     }
 

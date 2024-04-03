@@ -3,32 +3,50 @@ using UnityEngine;
 
 public class ModelManager : MonoBehaviour
 {
-    public List<Model> Models;
+    public List<Model> ModelPrefabs;
     public BottomBarManager BottomBarManager;
 
-    private int _currentModelIndex = 0;    
+    private Model _currentModel;    
 
     private void Start()
     {
-        LoadModel();
+        LoadModel(0);
     }
 
-    private void LoadModel()
+    private void LoadModel(int index)
     {
-        Model currentModel = Models[_currentModelIndex];
-        if (currentModel != null)
+        if(ModelPrefabs.Count == 0)
         {
-            List<ButtonCreationRequest> requests = new List<ButtonCreationRequest>();
-            foreach (var view in currentModel.Views)
-            {
-                requests.Add(new ButtonCreationRequest(view.Label, view.IsStartingView));
-            }
-            BottomBarManager.CreateButtons(requests, OnButtonClicked);
+            Debug.LogError("Model manager has no model registered");
+            return;
         }
+
+        if(index < 0 || index >= ModelPrefabs.Count)
+        {
+            Debug.LogError($"Index {index} is outside the Models list's boundaries");
+            return;
+        }
+
+        Model modelPrefab = ModelPrefabs[index];
+        if (modelPrefab == null)
+        {
+            Debug.LogError($"Model prefab at index {index} is null");
+            return;
+        }
+
+        if(_currentModel != null) _currentModel.Destroy();
+        _currentModel = Instantiate(modelPrefab, transform);
+
+        List<ButtonCreationRequest> requests = new List<ButtonCreationRequest>();
+        foreach (var view in _currentModel.Views)
+        {
+            requests.Add(new ButtonCreationRequest(view.Label, view.IsStartingView));
+        }
+        BottomBarManager.CreateButtons(requests, OnButtonClicked);
     }
 
     private void OnButtonClicked(ViewLabel label)
     {
-        Models[_currentModelIndex].PerformTransition(label);       
+        _currentModel.ChangeView(label);       
     }    
 }
