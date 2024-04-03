@@ -15,17 +15,17 @@ MonoBehaviour:
   Name: glTF/PbrMetallicRoughness
   TextureProperties:
   - TextureType: 0
-    PackingMethod: 1
+    PackingMethod: 0
     PropertyName: baseColorTexture
   - TextureType: 1
-    PackingMethod: 1
+    PackingMethod: 0
     PropertyName: emissiveTexture
   - TextureType: 2
     PackingMethod: 1
     PropertyName: metallicRoughnessTexture
   - TextureType: 3
-    PackingMethod: 1
+    PackingMethod: 0
     PropertyName: normalTexture
   - TextureType: 4
-    PackingMethod: 1
+    PackingMethod: 0
     PropertyName: occlusionTexture

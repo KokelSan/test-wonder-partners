@@ -726,7 +726,7 @@ GameObject:
   - component: {fileID: 313001527286848720}
   - component: {fileID: 7793943277605089949}
   m_Layer: 0
-  m_Name: ShowroomNavigationButton
+  m_Name: BottomBarButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
