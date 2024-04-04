@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class BottomBarButton : MonoBehaviour
 {
+    [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
+    
     [SerializeField] private Button ActivationButton;
     [SerializeField] private GameObject ActiveElements;
     [SerializeField] private GameObject AnimatedBackground;
@@ -28,10 +30,17 @@ public class BottomBarButton : MonoBehaviour
         SetActive(isActive);
     }
 
-    public void SetActive(bool isActive, TweenConfig tweenConfig = default)
+    public void SetActive(bool isActive)
     {
-        Vector3 targetScale = isActive ? Vector3.one : Vector3.zero;
-        ActiveElements.transform.DOScale(targetScale, tweenConfig.Duration).SetEase(tweenConfig.Ease);
+        if (isActive)
+        {
+            ActiveElements.transform.DOScale(Vector3.one, VisibilityTweenConfig.ShowConfig.Duration).SetEase(VisibilityTweenConfig.ShowConfig.Ease);
+        }
+        else
+        {
+            ActiveElements.transform.DOScale(Vector3.zero, VisibilityTweenConfig.HideConfig.Duration).SetEase(VisibilityTweenConfig.HideConfig.Ease);
+        }
+        
         ActivationButton.interactable = !isActive;
     }
 

@@ -18,13 +18,11 @@ public struct ButtonCreationRequest
 
 public class BottomBarManager : MonoBehaviour
 {
+    [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
+    
     [SerializeField] private List<BottomBarButtonSO> ButtonsDefinition;
     [SerializeField] private HorizontalLayoutGroup ButtonsParent;
     [SerializeField] private BottomBarButton ButtonPrefab;
-
-    [SerializeField] private TweenConfig BottomBarShowHideConfig;
-    [SerializeField] private TweenConfig ButtonActivationConfig;
-    [SerializeField] private TweenConfig ButtonDeactivationConfig;
 
     private Vector3 _buttonsParentInitialScale;
     private List<BottomBarButton> _instantiatedButtons = new List<BottomBarButton>();
@@ -53,7 +51,7 @@ public class BottomBarManager : MonoBehaviour
             }
             Debug.LogWarning($"Button with label '{buttonDef.Label}' is not defined");
         }
-        ButtonsParent.transform.DOScale(_buttonsParentInitialScale, BottomBarShowHideConfig.Duration).SetEase(BottomBarShowHideConfig.Ease);
+        ButtonsParent.transform.DOScale(_buttonsParentInitialScale, VisibilityTweenConfig.ShowConfig.Duration).SetEase(VisibilityTweenConfig.ShowConfig.Ease);
     }
 
     private void OnButtonClicked(int buttonIndex, Action<ViewLabel> onButtonClicked)
@@ -61,8 +59,8 @@ public class BottomBarManager : MonoBehaviour
         BottomBarButton oldButton = _instantiatedButtons[_currentActiveButtonIndex];
         BottomBarButton newButton = _instantiatedButtons[buttonIndex];
 
-        oldButton.SetActive(false, ButtonDeactivationConfig);
-        newButton.SetActive(true, ButtonActivationConfig);
+        oldButton.SetActive(false);
+        newButton.SetActive(true);
         onButtonClicked?.Invoke(newButton.Label);
 
         _currentActiveButtonIndex = buttonIndex;

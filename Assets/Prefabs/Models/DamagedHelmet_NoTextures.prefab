@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091de166e497aec4c9be435ebf9fe208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tweenConfig: {fileID: 11400000, guid: 9a24ef875d955f54c9bbbc04a57d962c, type: 2}
   Views:
   - Label: 1
     Position: {x: 0, y: 0, z: 0}
@@ -110,12 +111,6 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 90, y: 89.9, z: 0}
     IsStartingView: 0
-  TransitionConfig:
-    Ease: 3
-    Duration: 0.3
-  ShowHideConfig:
-    Ease: 3
-    Duration: 0.3
 --- !u!114 &4871591238925651247
 MonoBehaviour:
   m_ObjectHideFlags: 0

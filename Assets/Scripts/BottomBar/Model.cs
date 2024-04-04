@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class ModelView
@@ -14,9 +15,8 @@ public class ModelView
 
 public class Model : MonoBehaviour
 {
+    [SerializeField] private ModelTweenConfigSO tweenConfig;
     public List<ModelView> Views;
-    public TweenConfig TransitionConfig;
-    public TweenConfig ShowHideConfig;
 
     private void Start()
     {
@@ -28,21 +28,21 @@ public class Model : MonoBehaviour
         ModelView view = Views.Find(navTransf => navTransf.Label == newView);
         if (view != null)
         {
-            transform.DOLocalMove(view.Position, TransitionConfig.Duration).SetEase(TransitionConfig.Ease);
-            transform.DOLocalRotate(view.Rotation, TransitionConfig.Duration).SetEase(TransitionConfig.Ease);
+            transform.DOLocalMove(view.Position, tweenConfig.ViewTransitionConfig.Duration).SetEase(tweenConfig.ViewTransitionConfig.Ease);
+            transform.DOLocalRotate(view.Rotation, tweenConfig.ViewTransitionConfig.Duration).SetEase(tweenConfig.ViewTransitionConfig.Ease);
             return;
         }
-        Debug.LogError($"Navigation transform not found for label '{newView}'");
+        Debug.LogError($"Model View not found for label '{newView}'");
     }
 
     public void Show()
     {
-        transform.DOScale(Vector3.one, ShowHideConfig.Duration).SetEase(ShowHideConfig.Ease);
+        transform.DOScale(Vector3.one, tweenConfig.ShowConfig.Duration).SetEase(tweenConfig.ShowConfig.Ease);
     }
 
     public void Destroy()
     {
-        transform.DOScale(Vector3.zero, ShowHideConfig.Duration).SetEase(ShowHideConfig.Ease).
+        transform.DOScale(Vector3.zero, tweenConfig.HideConfig.Duration).SetEase(tweenConfig.HideConfig.Ease).
             OnComplete(() =>
             {
                 Destroy(this);
