@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class DownloadedTexture
 {
@@ -15,7 +14,7 @@ public class DownloadedTexture
     }
 }
 
-public class MaterialCreator : MonoBehaviour
+public class ModelMaterialCreator : MonoBehaviour
 {
     public ModelTextureConfigSO TextureConfig;
     public ShaderDescriptionTableSO ShaderDescription;
@@ -47,7 +46,7 @@ public class MaterialCreator : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}");
+            // Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}");
         }
 
         _downloadingTextures.Remove(textureDef);

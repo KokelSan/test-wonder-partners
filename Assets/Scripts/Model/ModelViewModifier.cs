@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [Serializable]
 public class ModelView
@@ -13,7 +12,7 @@ public class ModelView
     public bool IsStartingView;
 }
 
-public class Model : MonoBehaviour
+public class ModelViewModifier : MonoBehaviour
 {
     [SerializeField] private ModelTweenConfigSO tweenConfig;
     public List<ModelView> Views;
@@ -23,7 +22,7 @@ public class Model : MonoBehaviour
         transform.localScale = Vector3.zero;
     }
 
-    public void ChangeView(ViewLabel newView)
+    public void ModifyView(ViewLabel newView)
     {
         ModelView view = Views.Find(navTransf => navTransf.Label == newView);
         if (view != null)
@@ -35,9 +34,15 @@ public class Model : MonoBehaviour
         Debug.LogError($"Model View not found for label '{newView}'");
     }
 
-    public void Show()
+    
+    public void SetVisibility(bool isVisible)
     {
-        transform.DOScale(Vector3.one, tweenConfig.ShowConfig.Duration).SetEase(tweenConfig.ShowConfig.Ease);
+        if (isVisible)
+        {
+            transform.DOScale(Vector3.one, tweenConfig.ShowConfig.Duration).SetEase(tweenConfig.ShowConfig.Ease);
+            return;
+        }
+        transform.DOScale(Vector3.zero, tweenConfig.HideConfig.Duration).SetEase(tweenConfig.HideConfig.Ease);
     }
 
     public void Destroy()

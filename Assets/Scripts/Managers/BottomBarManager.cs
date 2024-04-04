@@ -20,10 +20,12 @@ public class BottomBarManager : MonoBehaviour
 {
     [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
     
-    [SerializeField] private List<BottomBarButtonSO> ButtonsDefinition;
+    [Header("Buttons instantiation")]
     [SerializeField] private HorizontalLayoutGroup ButtonsParent;
     [SerializeField] private BottomBarButton ButtonPrefab;
-
+    [Header("Buttons definition")]
+    [SerializeField] private List<BottomBarButtonSO> ButtonsDefinition;
+    
     private Vector3 _buttonsParentInitialScale;
     private List<BottomBarButton> _instantiatedButtons = new List<BottomBarButton>();
     private int _currentActiveButtonIndex = 0;

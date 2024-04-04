@@ -3,65 +3,81 @@ using UnityEngine;
 
 public class ModelManager : MonoBehaviour
 {
-    public bool DeleteDownloadedTexturesOnQuit;
-    public List<Model> ModelPrefabs;
-    public BottomBarManager BottomBarManager;
-
-    private Model _currentModel;    
+    [SerializeField] private bool DeleteDownloadedTexturesOnQuit;
+    [SerializeField] private List<ModelBehaviour> ModelPrefabs;
+    
+    private BottomBarManager _bottomBarManager;
+    private ModelBehaviour _currentModel;    
 
     private void Start()
     {
         LoadModel(0);
+
+        _bottomBarManager = FindObjectOfType<BottomBarManager>();
+        if (_bottomBarManager == null)
+        {
+            Debug.LogError("There is no Bottom Bar Manager in the scene!");
+        }
     }
 
     private void LoadModel(int index)
     {
         if(ModelPrefabs.Count == 0)
         {
-            Debug.LogError("Model manager has no model registered");
+            Debug.LogError("Model manager has no model registered!");
             return;
         }
 
         if(index < 0 || index >= ModelPrefabs.Count)
         {
-            Debug.LogError($"Index {index} is outside the Models list's boundaries");
+            Debug.LogError($"Index {index} is outside the models list's boundaries");
             return;
         }
 
-        Model modelPrefab = ModelPrefabs[index];
+        ModelBehaviour modelPrefab = ModelPrefabs[index];
         if (modelPrefab == null)
         {
             Debug.LogError($"Model prefab at index {index} is null");
             return;
         }
 
-        if(_currentModel != null) _currentModel.Destroy();
+        if(_currentModel != null) _currentModel.RequestDestroy();
         _currentModel = Instantiate(modelPrefab, transform);
-        if (_currentModel.TryGetComponent(out MaterialCreator materialCreator))
-        {
-            materialCreator.StartMaterialCreation(OnModelReady);
-        }        
+        _currentModel.Initialize(OnModelReady);
     }     
 
     private void OnModelReady()
     {
-        _currentModel.Show();
+        _currentModel.RequestVisibilityModification(true);
         RequestButtonsCreation();
     }
 
     private void RequestButtonsCreation()
     {
+        if (_bottomBarManager == null)
+        {
+            Debug.LogError("No Bottom Bar Manager in the scene, buttons creation aborted");
+            return;
+        }
+        
         List<ButtonCreationRequest> requests = new List<ButtonCreationRequest>();
-        foreach (ModelView view in _currentModel.Views)
+        List<ModelView> views = _currentModel.GetModelViews();
+        if (views == null)
+        {
+            Debug.LogError($"Model '{_currentModel}' has no registered views");
+            return;
+        }
+        
+        foreach (ModelView view in views)
         {
             requests.Add(new ButtonCreationRequest(view.Label, view.IsStartingView));
         }
-        BottomBarManager.CreateButtons(requests, OnButtonClicked);
+        _bottomBarManager.CreateButtons(requests, OnButtonClicked);
     }
 
     private void OnButtonClicked(ViewLabel label)
     {
-        _currentModel.ChangeView(label);
+        _currentModel.RequestViewModification(label);
     }
 
     private void OnDestroy()

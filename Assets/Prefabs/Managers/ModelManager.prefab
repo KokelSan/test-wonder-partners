@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c18413f4e7f94b4f83c60b807353636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeleteDownloadedTexturesOnQuit: 1
   ModelPrefabs:
-  - {fileID: 3653166942162419912, guid: 8f9f32fe593ac4e4aa5bf6d8318153c0, type: 3}
+  - {fileID: 8564789511401563854, guid: 8f9f32fe593ac4e4aa5bf6d8318153c0, type: 3}
   BottomBarManager: {fileID: 0}

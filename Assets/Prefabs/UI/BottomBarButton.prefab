@@ -723,7 +723,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5177329348643063481}
   - component: {fileID: 3165615287445857173}
-  - component: {fileID: 313001527286848720}
   - component: {fileID: 7793943277605089949}
   m_Layer: 0
   m_Name: BottomBarButton
@@ -768,27 +767,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
---- !u!95 &313001527286848720
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9077908914125066325}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7793943277605089949
 MonoBehaviour:
   m_ObjectHideFlags: 0
