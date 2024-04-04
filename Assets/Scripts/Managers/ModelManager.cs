@@ -38,11 +38,20 @@ public class ModelManager : MonoBehaviour
         _currentModel = Instantiate(modelPrefab, transform);
         if (_currentModel.TryGetComponent(out MaterialCreator materialCreator))
         {
-            materialCreator.StartMaterialCreation(() => _currentModel.Show());
-        }
+            materialCreator.StartMaterialCreation(OnModelReady);
+        }        
+    }     
 
+    private void OnModelReady()
+    {
+        _currentModel.Show();
+        RequestButtonsCreation();
+    }
+
+    private void RequestButtonsCreation()
+    {
         List<ButtonCreationRequest> requests = new List<ButtonCreationRequest>();
-        foreach (var view in _currentModel.Views)
+        foreach (ModelView view in _currentModel.Views)
         {
             requests.Add(new ButtonCreationRequest(view.Label, view.IsStartingView));
         }
@@ -51,6 +60,6 @@ public class ModelManager : MonoBehaviour
 
     private void OnButtonClicked(ViewLabel label)
     {
-        _currentModel.ChangeView(label);       
-    }    
+        _currentModel.ChangeView(label);
+    }
 }
