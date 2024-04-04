@@ -19,6 +19,7 @@ public class ModelViewModifier : MonoBehaviour
 
     private void Start()
     {
+        transform.localPosition = Views.Find(view => view.IsStartingView).Position;
         transform.localScale = Vector3.zero;
     }
 

@@ -16,8 +16,8 @@ public class DownloadedTexture
 
 public class ModelMaterialCreator : MonoBehaviour
 {
-    public ModelTextureConfigSO TextureConfig;
-    public ShaderDescriptionTableSO ShaderDescription;
+    [SerializeField] private ModelTextureConfigSO TextureConfig;
+    [SerializeField] private ShaderDescriptionTableSO ShaderDescription;
 
     private List<TextureDef> _downloadingTextures = new List<TextureDef>();
     private Dictionary<TextureType, DownloadedTexture> _downloadedTextures = new Dictionary<TextureType, DownloadedTexture>();
@@ -46,7 +46,7 @@ public class ModelMaterialCreator : MonoBehaviour
         }
         else
         {
-            // Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}");
+            Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}");
         }
 
         _downloadingTextures.Remove(textureDef);
@@ -79,26 +79,46 @@ public class ModelMaterialCreator : MonoBehaviour
             return;
         }
         
-        renderer.material = new Material(shader);
-        
+        Material material = new Material(shader)
+        {
+            globalIlluminationFlags = ShaderDescription.GIFlag,
+        };
+
         foreach (ShaderTextureProperty shaderTextureProperty in ShaderDescription.TextureProperties)
         {
             if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out DownloadedTexture downloadedTexture))
             {
-                if (downloadedTexture.Texture == null)
+                if (downloadedTexture.Texture != null)
                 {
-                    continue;
-                }
-
-                if (renderer.material.HasTexture(shaderTextureProperty.PropertyName))
-                {
-                    // renderer.material.EnableKeyword("");
-                    Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture.Texture, downloadedTexture.TextureDef.PackingMethod, shaderTextureProperty.PackingMethod);
-                    renderer.material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
+                    if (material.HasTexture(shaderTextureProperty.PropertyName))
+                    {
+                        Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture.Texture, downloadedTexture.TextureDef.PackingMethod, shaderTextureProperty.PackingMethod);
+                        material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
+                    }
                 }
             }
         }
-
+        
+        foreach (var keywordParam in ShaderDescription.KeywordParameters)
+        {
+            if (keywordParam.Enable)
+            {
+                material.EnableKeyword(keywordParam.Keyword);
+                continue;
+            }
+            material.DisableKeyword(keywordParam.Keyword);
+        }
+        
+        foreach (var colorParam in ShaderDescription.ColorParameters)
+        {
+            if (material.HasColor(colorParam.Name))
+            {
+                material.SetColor(colorParam.Name, colorParam.Color);
+            }
+        }
+        
+        renderer.material = material;
+        
         if (_downloadFailsNb == TextureConfig.Textures.Count)
         {
             Debug.LogError($"Material creation error: all textures download failed.");

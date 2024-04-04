@@ -29,3 +29,6 @@ MonoBehaviour:
   - TextureType: 4
     PackingMethod: 0
     PropertyName: occlusionTexture
+  KeywordParameters: []
+  ColorParameters: []
+  GIFlag: 0

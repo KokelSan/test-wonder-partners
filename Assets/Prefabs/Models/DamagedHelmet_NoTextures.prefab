@@ -113,15 +113,15 @@ MonoBehaviour:
   tweenConfig: {fileID: 11400000, guid: 9a24ef875d955f54c9bbbc04a57d962c, type: 2}
   Views:
   - Label: 1
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: -0.2, y: 0, z: -1}
     Rotation: {x: 90, y: -89.9, z: 0}
     IsStartingView: 0
   - Label: 0
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0, y: 0, z: -1}
     Rotation: {x: 90, y: 0, z: 0}
     IsStartingView: 1
   - Label: 2
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0.2, y: 0, z: -1}
     Rotation: {x: 90, y: 89.9, z: 0}
     IsStartingView: 0
 --- !u!114 &4871591238925651247

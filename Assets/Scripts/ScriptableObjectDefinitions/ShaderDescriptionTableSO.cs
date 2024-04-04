@@ -10,6 +10,20 @@ public struct ShaderTextureProperty
     public string PropertyName;
 }
 
+[Serializable]
+public struct ShaderKeywordParameter
+{
+    public string Keyword;
+    public bool Enable;
+}
+
+[Serializable]
+public struct ShaderColorParameter
+{
+    public string Name;
+    public Color Color;
+}
+
 /// <summary>
 /// A scriptable object to bind a texture type with the corresponding texture property name in a shader
 /// </summary>
@@ -18,4 +32,11 @@ public class ShaderDescriptionTableSO : ScriptableObject
 {
     public string Name;
     public List<ShaderTextureProperty> TextureProperties;
+    
+    [Header("Additional parameters")]
+    public List<ShaderKeywordParameter> KeywordParameters;
+    public List<ShaderColorParameter> ColorParameters;
+    
+    public MaterialGlobalIlluminationFlags GIFlag;
+    
 }

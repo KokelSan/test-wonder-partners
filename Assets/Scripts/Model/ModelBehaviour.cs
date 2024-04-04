@@ -24,7 +24,6 @@ public class ModelBehaviour : MonoBehaviour
         {
             Debug.LogWarning($"There is no ViewModifier component on model '{name}'");
         }
-        
     }
     
     public void RequestVisibilityModification(bool isVisible)

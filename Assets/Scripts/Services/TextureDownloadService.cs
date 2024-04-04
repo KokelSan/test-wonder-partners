@@ -7,8 +7,7 @@ using UnityEngine.Networking;
 
 public static class TextureDownloadService
 {    
-    public static bool DeleteDownloadsOnApplicationQuit = true;
-    private static List<string> _downloadsPaths = new List<string>();
+    public static List<string> CreatedTexturePaths = new List<string>();
 
     public static IEnumerator DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
     {
@@ -34,7 +33,7 @@ public static class TextureDownloadService
             try
             {
                 File.WriteAllBytes(textureDef.FullPath, textureBytes);
-                _downloadsPaths.Add(textureDef.FullPath);
+                CreatedTexturePaths.Add(textureDef.FullPath);
                 onDownloadComplete?.Invoke(textureDef, texture, string.Empty);
             }
             catch (Exception e)
@@ -46,21 +45,18 @@ public static class TextureDownloadService
 
     public static void CleanDownloads()
     {
-        if (DeleteDownloadsOnApplicationQuit)
+        foreach (string path in CreatedTexturePaths)
         {
-            foreach (string path in _downloadsPaths)
+            try
             {
-                try
-                {
-                    File.Delete(path);
-                    File.Delete(path + ".meta"); // No exception thrown if file doesn't exist, no additional try catch needed
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError($"File deletion failed: {e.Message} \nPath: {path}");
-                }
+                File.Delete(path);
+                File.Delete(path + ".meta"); // No exception thrown if file doesn't exist, no additional try catch needed
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"File deletion failed: {e.Message} \nPath: {path}");
             }
         }
-        _downloadsPaths.Clear();
+        CreatedTexturePaths.Clear();
     }
 }

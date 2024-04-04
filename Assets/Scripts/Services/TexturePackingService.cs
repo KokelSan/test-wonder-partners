@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 public static class TexturePackingService
@@ -34,7 +35,17 @@ public static class TexturePackingService
                         invertedTexture.Apply();
                         
                         byte[] textureBytes = invertedTexture.EncodeToPNG();
-                        File.WriteAllBytes("Assets/Textures/DamagedHelmet/ModifiedTextures/invertedTexture.png", textureBytes);
+                        
+                        try
+                        {
+                                string path = "Assets/Textures/DamagedHelmet/DamagedHelmet_TransformedMetallicTexture.png";
+                                File.WriteAllBytes(path, textureBytes);
+                                TextureDownloadService.CreatedTexturePaths.Add(path);
+                        }
+                        catch (Exception e)
+                        {
+                                Debug.LogError($"An error occured while transforming Texture: {e.Message}");
+                        }
                         
                         return invertedTexture;
                 }

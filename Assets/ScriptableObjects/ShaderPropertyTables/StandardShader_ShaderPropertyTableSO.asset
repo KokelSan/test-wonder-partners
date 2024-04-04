@@ -15,12 +15,24 @@ MonoBehaviour:
   Name: Standard
   TextureProperties:
   - TextureType: 0
+    PackingMethod: 0
     PropertyName: _MainTex
   - TextureType: 1
+    PackingMethod: 0
     PropertyName: _EmissionMap
   - TextureType: 2
+    PackingMethod: 0
     PropertyName: _MetallicGlossMap
   - TextureType: 3
+    PackingMethod: 0
     PropertyName: _BumpMap
   - TextureType: 4
+    PackingMethod: 0
     PropertyName: _OcclusionMap
+  KeywordParameters:
+  - Keyword: _EMISSION
+    Enable: 1
+  ColorParameters:
+  - Name: _EmissionColor
+    Color: {r: 1, g: 1, b: 1, a: 0}
+  GIFlag: 2

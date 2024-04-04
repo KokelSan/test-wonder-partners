@@ -49,10 +49,10 @@ public class ModelManager : MonoBehaviour
     private void OnModelReady()
     {
         _currentModel.RequestVisibilityModification(true);
-        RequestButtonsCreation();
+        RequestBottomBar();
     }
 
-    private void RequestButtonsCreation()
+    private void RequestBottomBar()
     {
         if (_bottomBarManager == null)
         {
@@ -72,7 +72,7 @@ public class ModelManager : MonoBehaviour
         {
             requests.Add(new ButtonCreationRequest(view.Label, view.IsStartingView));
         }
-        _bottomBarManager.CreateButtons(requests, OnButtonClicked);
+        _bottomBarManager.CreateAndShow(requests, OnButtonClicked);
     }
 
     private void OnButtonClicked(ViewLabel label)

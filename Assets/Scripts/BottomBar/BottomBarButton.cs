@@ -10,7 +10,6 @@ public class BottomBarButton : MonoBehaviour
     
     [SerializeField] private Button ActivationButton;
     [SerializeField] private GameObject ActiveElements;
-    [SerializeField] private GameObject AnimatedBackground;
     
     [SerializeField] private TMP_Text DisplayNameText;
     [SerializeField] private Image ActiveImage;

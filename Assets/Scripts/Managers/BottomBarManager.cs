@@ -19,10 +19,12 @@ public struct ButtonCreationRequest
 public class BottomBarManager : MonoBehaviour
 {
     [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
+    [SerializeField] private bool HideOnStart;
     
     [Header("Buttons instantiation")]
     [SerializeField] private HorizontalLayoutGroup ButtonsParent;
     [SerializeField] private BottomBarButton ButtonPrefab;
+    
     [Header("Buttons definition")]
     [SerializeField] private List<BottomBarButtonSO> ButtonsDefinition;
     
@@ -32,11 +34,13 @@ public class BottomBarManager : MonoBehaviour
 
     private void Start()
     {
+        if(!HideOnStart) return;
+        
         _buttonsParentInitialScale = ButtonsParent.transform.localScale;
         ButtonsParent.transform.localScale = Vector3.zero;
     }
 
-    public void CreateButtons(List<ButtonCreationRequest> requests, Action<ViewLabel> onButtonClicked)
+    public void CreateAndShow(List<ButtonCreationRequest> requests, Action<ViewLabel> onClickActionForModelManager)
     {
         foreach (var request in requests)
         {
@@ -45,7 +49,7 @@ public class BottomBarManager : MonoBehaviour
             {
                 BottomBarButton bottomBarButton = Instantiate(ButtonPrefab, ButtonsParent.transform);
                 int index = _instantiatedButtons.Count;
-                bottomBarButton.SetButton(buttonDef, request.IsStartingView, () => OnButtonClicked(index, onButtonClicked));
+                bottomBarButton.SetButton(buttonDef, request.IsStartingView, () => OnButtonClicked(index, onClickActionForModelManager));
                 if (request.IsStartingView) _currentActiveButtonIndex = index;
                 _instantiatedButtons.Add(bottomBarButton);
 
@@ -56,15 +60,12 @@ public class BottomBarManager : MonoBehaviour
         ButtonsParent.transform.DOScale(_buttonsParentInitialScale, VisibilityTweenConfig.ShowConfig.Duration).SetEase(VisibilityTweenConfig.ShowConfig.Ease);
     }
 
-    private void OnButtonClicked(int buttonIndex, Action<ViewLabel> onButtonClicked)
+    private void OnButtonClicked(int buttonIndex, Action<ViewLabel> onClickActionForModelManager)
     {
-        BottomBarButton oldButton = _instantiatedButtons[_currentActiveButtonIndex];
+        _instantiatedButtons[_currentActiveButtonIndex].SetActive(false);
         BottomBarButton newButton = _instantiatedButtons[buttonIndex];
-
-        oldButton.SetActive(false);
         newButton.SetActive(true);
-        onButtonClicked?.Invoke(newButton.Label);
-
         _currentActiveButtonIndex = buttonIndex;
+        onClickActionForModelManager?.Invoke(newButton.Label);
     }
 }
