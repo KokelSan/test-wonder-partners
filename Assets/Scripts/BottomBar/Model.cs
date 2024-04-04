@@ -20,7 +20,7 @@ public class Model : MonoBehaviour
 
     private void Start()
     {
-        transform.localScale = Vector3.zero;        
+        transform.localScale = Vector3.zero;
     }
 
     public void ChangeView(ViewLabel newView)

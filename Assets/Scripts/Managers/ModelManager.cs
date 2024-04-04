@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ModelManager : MonoBehaviour
 {
+    public bool DeleteDownloadedTexturesOnQuit;
     public List<Model> ModelPrefabs;
     public BottomBarManager BottomBarManager;
 
@@ -61,5 +62,10 @@ public class ModelManager : MonoBehaviour
     private void OnButtonClicked(ViewLabel label)
     {
         _currentModel.ChangeView(label);
+    }
+
+    private void OnDestroy()
+    {
+        if(DeleteDownloadedTexturesOnQuit) TextureDownloadService.CleanDownloads();
     }
 }

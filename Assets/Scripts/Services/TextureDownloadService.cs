@@ -5,30 +5,12 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class TextureDownloadManager : MonoBehaviour
-{
-    public static TextureDownloadManager Instance;
-    
-    public bool DeleteDownloadsOnApplicationQuit = true;
-    private List<string> _downloadsPaths = new List<string>();
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            return;
-        }
-        
-        Destroy(this);
-    }
+public static class TextureDownloadService
+{    
+    public static bool DeleteDownloadsOnApplicationQuit = true;
+    private static List<string> _downloadsPaths = new List<string>();
 
-    public void DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
-    {
-        StartCoroutine(Download(textureDef, onDownloadComplete));
-    }
-
-    private IEnumerator Download(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
+    public static IEnumerator DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
     {
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(textureDef.URL))
         {
@@ -62,7 +44,7 @@ public class TextureDownloadManager : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    public static void CleanDownloads()
     {
         if (DeleteDownloadsOnApplicationQuit)
         {

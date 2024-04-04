@@ -33,7 +33,7 @@ public class MaterialCreator : MonoBehaviour
         {
             textureDef.FullPath = TextureConfig.CommonPath + textureDef.PathEnd;
             _downloadingTextures.Add(textureDef);
-            TextureDownloadManager.Instance.DownloadTexture(textureDef, OnTextureDownloaded);
+            StartCoroutine(TextureDownloadService.DownloadTexture(textureDef, OnTextureDownloaded));
         }
         _onMaterialCreated = onMaterialCreated;
     }
