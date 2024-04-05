@@ -37,7 +37,6 @@ public class MaterialCreator : MonoBehaviour
             {
                 Debug.Log($"Texture '{textureDef.Type}' already downloaded, loading it from disk.");
                 _downloadedTextures.Add(new DownloadedTexture(textureDef, texture));
-                FileIOService.RegisterDeletableFilePath(path);
                 CheckIfDownloadIsComplete();
                 continue;
             }
@@ -93,14 +92,14 @@ public class MaterialCreator : MonoBehaviour
     {
         if (MaterialToCreate.ShaderConfig == null)
         {
-            Debug.LogError($"No Shader Description, material creation aborted.");
+            Debug.LogError($"No Shader Description referenced in the material config, material creation aborted.");
             return;
         }
         
         Shader shader = Shader.Find(MaterialToCreate.ShaderConfig.Name);
         if (shader == null)
         {
-            Debug.LogError($"Shader '{MaterialToCreate.ShaderConfig.Name}' is not valid, material creation aborted.");
+            Debug.LogError($"'{MaterialToCreate.ShaderConfig.Name}' is not a valid shader name, material creation aborted.");
             return;
         }
         
@@ -125,33 +124,33 @@ public class MaterialCreator : MonoBehaviour
             TextureType textureType = downloadedTexture.TextureDef.Type;
             
             // Setting the texture
-            ShaderTextureProperty shaderTextureProperty = MaterialToCreate.ShaderConfig.TextureProperties.Find(textureProperty => textureProperty.TextureType == textureType);
-            if (shaderTextureProperty != null)
+            TextureShaderProperty textureShaderProperty = MaterialToCreate.ShaderConfig.TextureProperties.Find(textureProperty => textureProperty.RelatedTexture == textureType);
+            if (textureShaderProperty != null)
             {
-                if (material.HasTexture(shaderTextureProperty.PropertyName))
+                if (material.HasTexture(textureShaderProperty.PropertyName))
                 {
-                    Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, shaderTextureProperty.PackingMethod, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix);
-                    material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
+                    Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, textureShaderProperty.PackingMethod, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix);
+                    material.SetTexture(textureShaderProperty.PropertyName, finalTexture);
                 }
             }
             
             // Enabling/disabling the keywords related to this texture
-            foreach (var keywordParameter in MaterialToCreate.ShaderConfig.KeywordParameters.FindAll(keywordParam => keywordParam.RelatedTexture == textureType))
+            foreach (var keywordParameter in MaterialToCreate.ShaderConfig.KeywordProperties.FindAll(keywordParam => keywordParam.RelatedTexture == textureType))
             {
                 if (keywordParameter.Enable)
                 {
-                    material.EnableKeyword(keywordParameter.Keyword);
+                    material.EnableKeyword(keywordParameter.PropertyName);
                     continue;
                 }
-                material.DisableKeyword(keywordParameter.Keyword);
+                material.DisableKeyword(keywordParameter.PropertyName);
             }
             
             // Setting the colors related to this texture
-            foreach (var colorParameter in MaterialToCreate.ShaderConfig.ColorParameters.FindAll(colorParam => colorParam.RelatedTexture == textureType))
+            foreach (var colorParameter in MaterialToCreate.ShaderConfig.ColorProperties.FindAll(colorParam => colorParam.RelatedTexture == textureType))
             {
-                if (material.HasColor(colorParameter.Name))
+                if (material.HasColor(colorParameter.PropertyName))
                 {
-                    material.SetColor(colorParameter.Name, colorParameter.Color);
+                    material.SetColor(colorParameter.PropertyName, colorParameter.Color);
                 }
             }
         }

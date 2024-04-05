@@ -11,7 +11,7 @@ public enum TextureType
     Occlusion
 }
 
-public enum ImageFormat
+public enum Extension
 {
     png,
     jpg
@@ -27,7 +27,7 @@ public enum PackingMethod
 public class TextureDef
 {
     public TextureType Type;
-    public ImageFormat Format;
+    public Extension Format;
     public PackingMethod PackingMethod;
     public string URL;
 
@@ -43,7 +43,7 @@ public class MaterialConfigSO : ScriptableObject
     [Header("Textures File Creation")]
     public string TexturesDirectory;
     
-    [Tooltip("The final name of a downloaded texture will be (TexturesDirectory/) TexturesNamePrefix + TextureType + Extension. For example: DamagedHelmet_BaseMap.png")]
+    [Tooltip("The final name of a downloaded texture will be (TexturesDirectory/) TexturesNamePrefix + RelatedTexture + Extension. For example: DamagedHelmet_BaseMap.png")]
     public string TexturesNamePrefix;
     
     [Header("Shader Config")]

@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Standard
   TextureProperties:
-  - TextureType: 0
+  - PropertyName: _MainTex
+    RelatedTexture: 0
     PackingMethod: 0
-    PropertyName: _MainTex
-  - TextureType: 1
+  - PropertyName: _EmissionMap
+    RelatedTexture: 1
     PackingMethod: 0
-    PropertyName: _EmissionMap
-  - TextureType: 2
+  - PropertyName: _MetallicGlossMap
+    RelatedTexture: 2
     PackingMethod: 0
-    PropertyName: _MetallicGlossMap
-  - TextureType: 3
+  - PropertyName: _BumpMap
+    RelatedTexture: 3
     PackingMethod: 0
-    PropertyName: _BumpMap
-  - TextureType: 4
+  - PropertyName: _OcclusionMap
+    RelatedTexture: 4
     PackingMethod: 0
-    PropertyName: _OcclusionMap
-  KeywordParameters:
-  - RelatedTexture: 1
-    Keyword: _EMISSION
+  KeywordProperties:
+  - PropertyName: _EMISSION
+    RelatedTexture: 1
     Enable: 1
-  ColorParameters:
-  - RelatedTexture: 1
-    Name: _EmissionColor
+  ColorProperties:
+  - PropertyName: _EmissionColor
+    RelatedTexture: 1
     Color: {r: 1, g: 1, b: 1, a: 0}
   GIFlag: 2

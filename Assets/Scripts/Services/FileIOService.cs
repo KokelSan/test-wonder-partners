@@ -39,6 +39,7 @@ public static class FileIOService
                                 byte[] bytes = File.ReadAllBytes(path);
                                 if (texture.LoadImage(bytes))
                                 {
+                                        _createdFilePaths.Add(path);
                                         return true;
                                 }
                         }
@@ -48,11 +49,6 @@ public static class FileIOService
                         }
                 }
                 return false;
-        }
-
-        public static void RegisterDeletableFilePath(String path)
-        {
-                _createdFilePaths.Add(path);
         }
         
         public static void DeleteAllCreatedFiles()

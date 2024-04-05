@@ -1,30 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-[Serializable]
-public class ShaderTextureProperty
-{
-    public TextureType TextureType;
-    public PackingMethod PackingMethod;
-    public string PropertyName;
-}
-
-[Serializable]
-public struct ShaderKeywordParameter
-{
-    public TextureType RelatedTexture;
-    public string Keyword;
-    public bool Enable;
-}
-
-[Serializable]
-public struct ShaderColorParameter
-{
-    public TextureType RelatedTexture;
-    public string Name;
-    public Color Color;
-}
 
 /// <summary>
 /// A scriptable object to bind a general texture type with the corresponding texture property name defined in the shader
@@ -33,11 +8,11 @@ public struct ShaderColorParameter
 public class ShaderConfigSO : ScriptableObject
 {
     public string Name;
-    public List<ShaderTextureProperty> TextureProperties;
+    public List<TextureShaderProperty> TextureProperties;
     
     [Header("Additional Parameters")]
-    public List<ShaderKeywordParameter> KeywordParameters;
-    public List<ShaderColorParameter> ColorParameters;
+    public List<KeywordShaderProperty> KeywordProperties;
+    public List<ColorShaderProperty> ColorProperties;
     
     public MaterialGlobalIlluminationFlags GIFlag;
 }

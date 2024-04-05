@@ -17,10 +17,10 @@ public class ModelManager : MonoBehaviour
         }
         _bottomBarManager.Initialize();
         
-        LoadModel(0);
+        LoadModelIfPossible(0);
     }
 
-    private void LoadModel(int index)
+    private void LoadModelIfPossible(int index)
     {
         if(ModelPrefabs.Count == 0)
         {
@@ -41,6 +41,11 @@ public class ModelManager : MonoBehaviour
             return;
         }
 
+        LoadModel(modelPrefab);
+    }    
+    
+    private void LoadModel(ModelBehaviour modelPrefab)
+    {
         if(_currentModel != null) _currentModel.RequestDestroy();
         _currentModel = Instantiate(modelPrefab, transform);
         _currentModel.name = modelPrefab.name;
