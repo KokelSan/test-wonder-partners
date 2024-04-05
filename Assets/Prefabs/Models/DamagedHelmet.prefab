@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f675b97a046a4ed7bf7685264565bc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaterialToCreate: {fileID: 11400000, guid: 1243a2d8225225549b2881e18d2c4837, type: 2}
+  MaterialToCreate: {fileID: 11400000, guid: 44c633242f4999c4db0d47d8653e0ed7, type: 2}
 --- !u!114 &3653166942162419912
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -21,13 +21,14 @@ public class MaterialCreator : MonoBehaviour
     private List<TextureDef> _downloadingTextures = new List<TextureDef>();
     private Dictionary<TextureType, DownloadedTexture> _downloadedTextures = new Dictionary<TextureType, DownloadedTexture>();
     private int _downloadFailsNb = 0;
-    private Action _onMaterialCreated;
+    
+    private Action _onModelReady;
 
     private bool DownloadComplete => _downloadingTextures.Count == 0;
     
-    public void StartMaterialCreation(Action onMaterialCreated)
+    public void StartMaterialCreation(Action onModelReady)
     {
-        _onMaterialCreated = onMaterialCreated;
+        _onModelReady = onModelReady;
         
         foreach (TextureDef textureDef in MaterialToCreate.Textures)
         {
@@ -46,18 +47,35 @@ public class MaterialCreator : MonoBehaviour
         else
         {
             Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}\n");
+            _downloadedTextures.Add(textureDef.Type, new DownloadedTexture(textureDef, downloadedTexture));
         }
 
         _downloadingTextures.Remove(textureDef);
-        _downloadedTextures.Add(textureDef.Type, new DownloadedTexture(textureDef, downloadedTexture));
         
         if (DownloadComplete)
         {
-            CreateMaterial();
+            if (_downloadFailsNb == MaterialToCreate.Textures.Count)
+            {
+                Debug.LogError($"All textures download failed, material creation aborted.");
+                _onModelReady?.Invoke();
+                _onModelReady = null;
+                return;
+            }
+        
+            if (_downloadFailsNb > 0)
+            {
+                Debug.LogError($"Textures download ended with {_downloadFailsNb} {(_downloadFailsNb == 1 ? "fail" : "fails")} out of {MaterialToCreate.Textures.Count}. Material will be created with downloaded textures only.");
+            }
+            else
+            {
+                Debug.Log($"All {MaterialToCreate.Textures.Count} textures have been successfully downloaded.");
+            }
+            
+            CreateMaterialIfPossible();
         }
     }
-
-    private void CreateMaterial()
+    
+    private void CreateMaterialIfPossible()
     {
         if (MaterialToCreate.ShaderConfig == null)
         {
@@ -74,65 +92,57 @@ public class MaterialCreator : MonoBehaviour
         
         if (!TryGetComponent(out Renderer renderer))
         {
-            Debug.LogError("This model has no renderer to receive the material");
+            Debug.LogError("This model has no renderer, material creation aborted.");
             return;
         }
         
+        CreateMaterial(shader, renderer);
+    }
+    
+    private void CreateMaterial(Shader shader, Renderer renderer)
+    {
         Material material = new Material(shader)
         {
             globalIlluminationFlags = MaterialToCreate.ShaderConfig.GIFlag,
         };
 
-        foreach (ShaderTextureProperty shaderTextureProperty in MaterialToCreate.ShaderConfig.TextureProperties)
+        foreach (var (textureType, downloadedTexture) in _downloadedTextures)
         {
-            if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out DownloadedTexture downloadedTexture))
+            // Setting the texture
+            ShaderTextureProperty shaderTextureProperty = MaterialToCreate.ShaderConfig.TextureProperties.Find(textureProperty => textureProperty.TextureType == textureType);
+            if (shaderTextureProperty != null)
             {
-                if (downloadedTexture.Texture != null)
+                if (material.HasTexture(shaderTextureProperty.PropertyName))
                 {
-                    if (material.HasTexture(shaderTextureProperty.PropertyName))
-                    {
-                        Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, shaderTextureProperty.PackingMethod, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix);
-                        material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
-                    }
+                    Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, shaderTextureProperty.PackingMethod, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix);
+                    material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
+                }
+            }
+            
+            // Enabling/disabling the keywords related to this texture
+            foreach (var keywordParameter in MaterialToCreate.ShaderConfig.KeywordParameters.FindAll(keywordParam => keywordParam.RelatedTexture == textureType))
+            {
+                if (keywordParameter.Enable)
+                {
+                    material.EnableKeyword(keywordParameter.Keyword);
+                    continue;
+                }
+                material.DisableKeyword(keywordParameter.Keyword);
+            }
+            
+            // Setting the colors related to this texture
+            foreach (var colorParameter in MaterialToCreate.ShaderConfig.ColorParameters.FindAll(colorParam => colorParam.RelatedTexture == textureType))
+            {
+                if (material.HasColor(colorParameter.Name))
+                {
+                    material.SetColor(colorParameter.Name, colorParameter.Color);
                 }
             }
         }
         
-        foreach (var keywordParam in MaterialToCreate.ShaderConfig.KeywordParameters)
-        {
-            if (keywordParam.Enable)
-            {
-                material.EnableKeyword(keywordParam.Keyword);
-                continue;
-            }
-            material.DisableKeyword(keywordParam.Keyword);
-        }
-        
-        foreach (var colorParam in MaterialToCreate.ShaderConfig.ColorParameters)
-        {
-            if (material.HasColor(colorParam.Name))
-            {
-                material.SetColor(colorParam.Name, colorParam.Color);
-            }
-        }
-        
         renderer.material = material;
-        
-        if (_downloadFailsNb == MaterialToCreate.Textures.Count)
-        {
-            Debug.LogError($"Material creation error: all textures download failed.");
-        }
-        else if (_downloadFailsNb > 0)
-        {
-            string msgEnd = _downloadFailsNb == 1 ? "texture download fail" : "textures download fails";
-            Debug.LogError($"Material creation ended with {_downloadFailsNb} {msgEnd}.");
-        }
-        else
-        {
-            Debug.Log($"Textures successfully downloaded, material created.");
-        }
 
-        _onMaterialCreated?.Invoke();
-        _onMaterialCreated = null;
+        _onModelReady?.Invoke();
+        _onModelReady = null;
     }
 }

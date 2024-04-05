@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf3fc958f662e8e4699138adba881256, type: 3}
-  m_Name: TEST_OcclusionFail_DamagedHelmet_MaterialConfig
+  m_Name: TEST_EmissiveOcclusionFail_DamagedHelmet_MaterialConfig
   m_EditorClassIdentifier: 
   Textures:
   - Type: 0
@@ -21,8 +21,7 @@ MonoBehaviour:
   - Type: 1
     Format: 0
     PackingMethod: 0
-    URL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR
-      (Emissive).png?alt=media&token=81bec0e1-3a05-4b59-a640-61b4bb528cc7
+    URL: https://firebasesto
   - Type: 2
     Format: 0
     PackingMethod: 1

@@ -30,9 +30,11 @@ MonoBehaviour:
     PackingMethod: 0
     PropertyName: _OcclusionMap
   KeywordParameters:
-  - Keyword: _EMISSION
+  - RelatedTexture: 1
+    Keyword: _EMISSION
     Enable: 1
   ColorParameters:
-  - Name: _EmissionColor
+  - RelatedTexture: 1
+    Name: _EmissionColor
     Color: {r: 1, g: 1, b: 1, a: 0}
   GIFlag: 2

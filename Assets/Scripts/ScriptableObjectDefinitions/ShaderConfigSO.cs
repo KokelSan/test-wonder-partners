@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct ShaderTextureProperty
+public class ShaderTextureProperty
 {
     public TextureType TextureType;
     public PackingMethod PackingMethod;
@@ -13,6 +13,7 @@ public struct ShaderTextureProperty
 [Serializable]
 public struct ShaderKeywordParameter
 {
+    public TextureType RelatedTexture;
     public string Keyword;
     public bool Enable;
 }
@@ -20,6 +21,7 @@ public struct ShaderKeywordParameter
 [Serializable]
 public struct ShaderColorParameter
 {
+    public TextureType RelatedTexture;
     public string Name;
     public Color Color;
 }
