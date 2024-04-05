@@ -34,11 +34,11 @@ public class ModelBehaviour : MonoBehaviour
         }
     }
     
-    public void RequestViewModification(ViewLabel label)
+    public void RequestViewModification(ButtonConfigSO buttonConfig)
     {
         if (_viewModifier)
         {
-            _viewModifier.ModifyView(label);
+            _viewModifier.ModifyView(buttonConfig);
         }
     }
 

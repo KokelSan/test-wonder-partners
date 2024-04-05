@@ -4,18 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public struct ButtonCreationRequest
-{
-    public ViewLabel Label;
-    public bool IsStartingView;
-
-    public ButtonCreationRequest(ViewLabel label, bool isStartingView)
-    {
-        Label = label;
-        IsStartingView = isStartingView;
-    }
-}
-
 public class BottomBarManager : MonoBehaviour
 {
     [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
@@ -24,9 +12,6 @@ public class BottomBarManager : MonoBehaviour
     [Header("Buttons instantiation")]
     [SerializeField] private HorizontalLayoutGroup ButtonsParent;
     [SerializeField] private BottomBarButton ButtonPrefab;
-    
-    [Header("Buttons definition")]
-    [SerializeField] private List<BottomBarButtonSO> ButtonsDefinition;
     
     private Vector3 _buttonsParentInitialScale;
     private List<BottomBarButton> _instantiatedButtons = new List<BottomBarButton>();
@@ -40,32 +25,25 @@ public class BottomBarManager : MonoBehaviour
         ButtonsParent.transform.localScale = Vector3.zero;
     }
 
-    public void CreateAndShow(List<ButtonCreationRequest> requests, Action<ViewLabel> onClickActionForModelManager)
+    public void CreateButtonsForViews(List<ModelView> views, Action<ButtonConfigSO> modelManagerOnClickAction)
     {
-        foreach (var request in requests)
+        foreach (var view in views)
         {
-            BottomBarButtonSO buttonDef = ButtonsDefinition.Find(button => button.Label == request.Label);
-            if (buttonDef != null)
-            {
-                BottomBarButton bottomBarButton = Instantiate(ButtonPrefab, ButtonsParent.transform);
-                int index = _instantiatedButtons.Count;
-                bottomBarButton.SetButton(buttonDef, request.IsStartingView, () => OnButtonClicked(index, onClickActionForModelManager));
-                if (request.IsStartingView) _currentActiveButtonIndex = index;
-                _instantiatedButtons.Add(bottomBarButton);
-
-                continue;
-            }
-            Debug.LogWarning($"Button with label '{buttonDef.Label}' is not defined");
+            BottomBarButton bottomBarButton = Instantiate(ButtonPrefab, ButtonsParent.transform);
+            int index = _instantiatedButtons.Count;
+            bottomBarButton.SetButtonForView(view, () => OnButtonClicked(index, modelManagerOnClickAction));
+            if (view.IsStartingView) _currentActiveButtonIndex = index;
+            _instantiatedButtons.Add(bottomBarButton);
         }
         ButtonsParent.transform.DOScale(_buttonsParentInitialScale, VisibilityTweenConfig.ShowConfig.Duration).SetEase(VisibilityTweenConfig.ShowConfig.Ease);
     }
 
-    private void OnButtonClicked(int buttonIndex, Action<ViewLabel> onClickActionForModelManager)
+    private void OnButtonClicked(int buttonIndex, Action<ButtonConfigSO> modelManagerOnClickAction)
     {
         _instantiatedButtons[_currentActiveButtonIndex].SetActive(false);
         BottomBarButton newButton = _instantiatedButtons[buttonIndex];
         newButton.SetActive(true);
         _currentActiveButtonIndex = buttonIndex;
-        onClickActionForModelManager?.Invoke(newButton.Label);
+        modelManagerOnClickAction?.Invoke(newButton.Config);
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 public class ModelManager : MonoBehaviour
 {
     [SerializeField] private bool DeleteCreatedFilesOnQuit = true;
+    
+    [Space]
     [SerializeField] private List<ModelBehaviour> ModelPrefabs;
     
     private BottomBarManager _bottomBarManager;
@@ -60,7 +62,6 @@ public class ModelManager : MonoBehaviour
             return;
         }
         
-        List<ButtonCreationRequest> requests = new List<ButtonCreationRequest>();
         List<ModelView> views = _currentModel.GetModelViews();
         if (views == null)
         {
@@ -68,16 +69,12 @@ public class ModelManager : MonoBehaviour
             return;
         }
         
-        foreach (ModelView view in views)
-        {
-            requests.Add(new ButtonCreationRequest(view.Label, view.IsStartingView));
-        }
-        _bottomBarManager.CreateAndShow(requests, OnButtonClicked);
+        _bottomBarManager.CreateButtonsForViews(views, OnButtonClicked);
     }
 
-    private void OnButtonClicked(ViewLabel label)
+    private void OnButtonClicked(ButtonConfigSO buttonConfig)
     {
-        _currentModel.RequestViewModification(label);
+        _currentModel.RequestViewModification(buttonConfig);
     }
 
     private void OnDestroy()

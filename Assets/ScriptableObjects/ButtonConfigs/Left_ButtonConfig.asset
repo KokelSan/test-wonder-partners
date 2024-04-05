@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a258014f8d3dbb042b6949396f631d57, type: 3}
-  m_Name: Front_ButtonDef
+  m_Name: Left_ButtonConfig
   m_EditorClassIdentifier: 
-  Label: 0
-  ActiveIcon: {fileID: 21300000, guid: 1ade67ea3852ae840a366e1ffc91f9b0, type: 3}
-  InactiveIcon: {fileID: 21300000, guid: 9e7846b4eff7f6149a1ec9becb067147, type: 3}
+  DisplayName: Left
+  ActiveIcon: {fileID: 21300000, guid: 85a9b05f9faaf094784a11e635a7debb, type: 3}
+  InactiveIcon: {fileID: 21300000, guid: 71694f690cec3024c9bfa4abfa464746, type: 3}

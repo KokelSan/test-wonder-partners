@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2570a6a69c74ccbbd60881d9b916541, type: 3}
-  m_Name: glTFMetallicRoughness_ShaderPropertyTableSO
+  m_Name: glTFMetallicRoughness_ShaderPropertyTable
   m_EditorClassIdentifier: 
   Name: glTF/PbrMetallicRoughness
   TextureProperties:

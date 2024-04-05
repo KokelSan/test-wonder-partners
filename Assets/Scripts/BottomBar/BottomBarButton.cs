@@ -15,18 +15,21 @@ public class BottomBarButton : MonoBehaviour
     [SerializeField] private Image ActiveImage;
     [SerializeField] private Image InactiveImage;
 
-    public ViewLabel Label => _label;
-    private ViewLabel _label;
+    public ButtonConfigSO Config => _currentConfig;
+    private ButtonConfigSO _currentConfig;
 
-    public void SetButton(BottomBarButtonSO buttonDef, bool isActive, UnityAction onButtonClicked)
+    public void SetButtonForView(ModelView view, UnityAction onButtonClicked)
     {
-        _label = buttonDef.Label;
-        name = $"{_label}_Button";
-        DisplayNameText.text = _label.ToString();
-        ActiveImage.sprite = buttonDef.ActiveIcon;
-        InactiveImage.sprite = buttonDef.InactiveIcon;
+        ButtonConfigSO buttonConfig = view.ButtonConfig;
+        
+        name = $"{buttonConfig.DisplayName}_Button";
+        DisplayNameText.text = buttonConfig.DisplayName;
+        ActiveImage.sprite = buttonConfig.ActiveIcon;
+        InactiveImage.sprite = buttonConfig.InactiveIcon;
         ActivationButton.onClick.AddListener(onButtonClicked);
-        SetActive(isActive);
+        _currentConfig = view.ButtonConfig;
+        
+        SetActive(view.IsStartingView);
     }
 
     public void SetActive(bool isActive)

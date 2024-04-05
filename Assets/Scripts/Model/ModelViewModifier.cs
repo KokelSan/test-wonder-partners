@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class ModelView
 {
-    public ViewLabel Label;
+    public ButtonConfigSO ButtonConfig;
     public Vector3 Position;
     public Vector3 Rotation;
     public bool IsStartingView;
@@ -17,22 +17,29 @@ public class ModelViewModifier : MonoBehaviour
     [SerializeField] private ModelTweenConfigSO tweenConfig;
     public List<ModelView> Views;
 
+    private Dictionary<ButtonConfigSO, ModelView> _buttonToViewDict = new Dictionary<ButtonConfigSO, ModelView>();
+
     private void Start()
     {
         transform.localPosition = Views.Find(view => view.IsStartingView).Position;
         transform.localScale = Vector3.zero;
+        
+        _buttonToViewDict.Clear();
+        foreach (ModelView view in Views)
+        {
+            _buttonToViewDict.Add(view.ButtonConfig, view);
+        }
     }
-
-    public void ModifyView(ViewLabel newView)
+    
+    public void ModifyView(ButtonConfigSO buttonConfig)
     {
-        ModelView view = Views.Find(navTransf => navTransf.Label == newView);
-        if (view != null)
+        if (_buttonToViewDict.TryGetValue(buttonConfig, out ModelView view))
         {
             transform.DOLocalMove(view.Position, tweenConfig.ViewTransitionConfig.Duration).SetEase(tweenConfig.ViewTransitionConfig.Ease);
             transform.DOLocalRotate(view.Rotation, tweenConfig.ViewTransitionConfig.Duration).SetEase(tweenConfig.ViewTransitionConfig.Ease);
             return;
         }
-        Debug.LogError($"Model View not found for label '{newView}'");
+        Debug.LogError($"Model View not found for buttonConfig '{buttonConfig.name}'");
     }
 
     

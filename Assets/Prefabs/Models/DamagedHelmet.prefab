@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3653166942162419912}
   - component: {fileID: 4871591238925651247}
   m_Layer: 0
-  m_Name: DamagedHelmet_NoTextures
+  m_Name: DamagedHelmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,15 +112,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweenConfig: {fileID: 11400000, guid: 9a24ef875d955f54c9bbbc04a57d962c, type: 2}
   Views:
-  - Label: 1
+  - ButtonConfig: {fileID: 11400000, guid: e96a65c8ab2b7824f9dac45a83c98404, type: 2}
     Position: {x: -0.2, y: 0, z: -1}
     Rotation: {x: 90, y: -89.9, z: 0}
     IsStartingView: 0
-  - Label: 0
+  - ButtonConfig: {fileID: 11400000, guid: 413ee40908a5d834885c9abbcb85134c, type: 2}
     Position: {x: 0, y: 0, z: -1}
     Rotation: {x: 90, y: 0, z: 0}
     IsStartingView: 1
-  - Label: 2
+  - ButtonConfig: {fileID: 11400000, guid: 0332e2370596fb440b610a5989e7e437, type: 2}
     Position: {x: 0.2, y: 0, z: -1}
     Rotation: {x: 90, y: 89.9, z: 0}
     IsStartingView: 0
