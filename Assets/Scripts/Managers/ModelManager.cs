@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ModelManager : MonoBehaviour
 {
-    [SerializeField] private bool DeleteDownloadedTexturesOnQuit;
+    [SerializeField] private bool DeleteCreatedFilesOnQuit = true;
     [SerializeField] private List<ModelBehaviour> ModelPrefabs;
     
     private BottomBarManager _bottomBarManager;
@@ -82,6 +82,6 @@ public class ModelManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(DeleteDownloadedTexturesOnQuit) TextureDownloadService.CleanDownloads();
+        if(DeleteCreatedFilesOnQuit) FileIOService.DeleteAllCreatedFiles();
     }
 }

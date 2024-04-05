@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum TextureType
 {
@@ -30,9 +31,9 @@ public class TextureDef
     public ImageFormat Format;
     public PackingMethod PackingMethod;
     public string URL;
-
-    public string PathEnd => $"{Type}.{Format}";
-    [HideInInspector] public string FullPath;
+    
+    public string Extension => $".{Format}";
+    [HideInInspector] public string Path; // the full path without extension, allowing insertion before extension
 } 
 
 [CreateAssetMenu(menuName = "Wonder Partner's/Model Texture Config/New Config",  fileName = "_ModelTextureConfigSO")]

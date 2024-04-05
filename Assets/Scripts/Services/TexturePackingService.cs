@@ -4,51 +4,43 @@ using UnityEngine;
 
 public static class TexturePackingService
 {
-        public static Texture2D ComputeTexture(Texture2D texture, PackingMethod currentPackingMethod, PackingMethod targetPackingMethod)
+        public static Texture2D ComputeTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod)
         {
-                if (currentPackingMethod == targetPackingMethod)
+                if (downloadedTexture.TextureDef.PackingMethod == targetPackingMethod)
                 {
-                        return texture;
+                        return downloadedTexture.Texture;
                 }
                 
-                return TransformTexture(texture, currentPackingMethod, targetPackingMethod);
+                return TransformTexture(downloadedTexture, targetPackingMethod);
         }
 
-        private static Texture2D TransformTexture(Texture2D texture, PackingMethod currentPackingMethod, PackingMethod targetPackingMethod)
+        private static Texture2D TransformTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod)
         {
-                Debug.Log($"Transforming texture from {currentPackingMethod} to {targetPackingMethod}");
+                Debug.Log($"Transforming texture from {downloadedTexture.TextureDef.PackingMethod} to {targetPackingMethod}");
                 
-                if (currentPackingMethod == PackingMethod.glTF2 && targetPackingMethod == PackingMethod.Standard)
+                if (downloadedTexture.TextureDef.PackingMethod == PackingMethod.glTF2 && targetPackingMethod == PackingMethod.Standard)
                 {
-                        Texture2D invertedTexture = new Texture2D(texture.width, texture.height);
+                        Texture2D originalTexture = downloadedTexture.Texture;
+                        Texture2D transformedTexture = new Texture2D(originalTexture.width, originalTexture.height);
 
-                        for (int y = 0; y < texture.height; y++)
+                        for (int y = 0; y < originalTexture.height; y++)
                         {
-                                for (int x = 0; x < texture.width; x++)
+                                for (int x = 0; x < originalTexture.width; x++)
                                 {
-                                        Color originalColor = texture.GetPixel(x, y);
-                                        Color invertedColor = new Color(originalColor.r, originalColor.g, originalColor.b, originalColor.g);
-                                        invertedTexture.SetPixel(x, y, invertedColor);
+                                        Color originalColor = originalTexture.GetPixel(x, y);
+                                        Color transformedColor = new Color(originalColor.r, originalColor.g, originalColor.b, originalColor.g);
+                                        transformedTexture.SetPixel(x, y, transformedColor);
                                 }
                         }
+                        transformedTexture.Apply();
 
-                        invertedTexture.Apply();
-                        
-                        byte[] textureBytes = invertedTexture.EncodeToPNG();
-                        
-                        try
+                        string path = downloadedTexture.TextureDef.Path + "_Transformed" + downloadedTexture.TextureDef.Extension;
+                        if (FileIOService.TryCreateFile(path, transformedTexture.EncodeToPNG(), out string error))
                         {
-                                string path = "Assets/Textures/DamagedHelmet/DamagedHelmet_TransformedMetallicTexture.png";
-                                File.WriteAllBytes(path, textureBytes);
-                                TextureDownloadService.CreatedTexturePaths.Add(path);
+                                return transformedTexture;
                         }
-                        catch (Exception e)
-                        {
-                                Debug.LogError($"An error occured while transforming Texture: {e.Message}");
-                        }
-                        
-                        return invertedTexture;
+                        Debug.LogError($"An error occured while transforming Texture: {error}");
                 }
-                return texture;
+                return downloadedTexture.Texture;
         }
 }

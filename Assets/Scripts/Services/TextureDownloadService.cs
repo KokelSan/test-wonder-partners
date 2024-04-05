@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public static class TextureDownloadService
 {    
-    public static List<string> CreatedTexturePaths = new List<string>();
-
     public static IEnumerator DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
     {
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(textureDef.URL))
@@ -27,36 +23,15 @@ public static class TextureDownloadService
                 onDownloadComplete?.Invoke(textureDef, null, "downloaded texture is null");
                 yield break;
             }
-            
-            byte[] textureBytes = texture.EncodeToPNG();
-            
-            try
-            {
-                File.WriteAllBytes(textureDef.FullPath, textureBytes);
-                CreatedTexturePaths.Add(textureDef.FullPath);
-                onDownloadComplete?.Invoke(textureDef, texture, string.Empty);
-            }
-            catch (Exception e)
-            {
-                onDownloadComplete?.Invoke(textureDef, null, e.Message);
-            }
-        }
-    }
 
-    public static void CleanDownloads()
-    {
-        foreach (string path in CreatedTexturePaths)
-        {
-            try
+            string path = textureDef.Path + textureDef.Extension;
+            if (!FileIOService.TryCreateFile(path, texture.EncodeToPNG(), out string error))
             {
-                File.Delete(path);
-                File.Delete(path + ".meta"); // No exception thrown if file doesn't exist, no additional try catch needed
+                onDownloadComplete?.Invoke(textureDef, null, error);
+                yield break;
             }
-            catch (Exception e)
-            {
-                Debug.LogError($"File deletion failed: {e.Message} \nPath: {path}");
-            }
+            
+            onDownloadComplete?.Invoke(textureDef, texture, string.Empty);
         }
-        CreatedTexturePaths.Clear();
     }
 }

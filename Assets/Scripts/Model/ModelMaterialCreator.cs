@@ -28,13 +28,37 @@ public class ModelMaterialCreator : MonoBehaviour
     
     public void StartMaterialCreation(Action onMaterialCreated)
     {
+        _onMaterialCreated = onMaterialCreated;
+        SetAllTexturesFullPath();
+
+        if (TryLocateTextures())
+        {
+            
+        }
+        
         foreach (TextureDef textureDef in TextureConfig.Textures)
         {
-            textureDef.FullPath = TextureConfig.CommonPath + textureDef.PathEnd;
             _downloadingTextures.Add(textureDef);
             StartCoroutine(TextureDownloadService.DownloadTexture(textureDef, OnTextureDownloaded));
         }
-        _onMaterialCreated = onMaterialCreated;
+    }
+
+    private void SetAllTexturesFullPath()
+    {
+        foreach (TextureDef textureDef in TextureConfig.Textures)
+        {
+            textureDef.Path = TextureConfig.CommonPath + textureDef.Type;
+        }
+    }
+    
+    private bool TryLocateTextures()
+    {
+        // foreach (TextureDef textureDef in TextureConfig.Textures)
+        // {
+        //     
+        // }
+
+        return false;
     }
 
     private void OnTextureDownloaded(TextureDef textureDef, Texture2D downloadedTexture, string errorMsg)
@@ -92,7 +116,7 @@ public class ModelMaterialCreator : MonoBehaviour
                 {
                     if (material.HasTexture(shaderTextureProperty.PropertyName))
                     {
-                        Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture.Texture, downloadedTexture.TextureDef.PackingMethod, shaderTextureProperty.PackingMethod);
+                        Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, shaderTextureProperty.PackingMethod);
                         material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
                     }
                 }
