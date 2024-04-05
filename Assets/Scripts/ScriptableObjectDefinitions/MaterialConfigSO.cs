@@ -30,9 +30,8 @@ public class TextureDef
     public ImageFormat Format;
     public PackingMethod PackingMethod;
     public string URL;
-    
+
     public string Extension => $".{Format}";
-    [HideInInspector] public string Path; // the full path without extension, allowing insertion before extension
 } 
 
 [CreateAssetMenu(menuName = "Wonder Partner's/Material Config/New Config",  fileName = "_MaterialConfig")]
@@ -42,11 +41,10 @@ public class MaterialConfigSO : ScriptableObject
     public List<TextureDef> Textures;
     
     [Header("Textures File Creation")]
-    public string TexturesSaveFolder;
+    public string TexturesDirectory;
     
-    [Tooltip("The final name of a downloaded texture will be (TexturesSaveFolder/) TexturesPrefixName + TextureType + Extension. For example: DamagedHelmet_BaseMap.png")]
-    public string TexturesPrefixName;
-    public string TexturesCommonPath => TexturesSaveFolder + "/" + TexturesPrefixName;
+    [Tooltip("The final name of a downloaded texture will be (TexturesDirectory/) TexturesNamePrefix + TextureType + Extension. For example: DamagedHelmet_BaseMap.png")]
+    public string TexturesNamePrefix;
     
     [Header("Shader Config")]
     public ShaderConfigSO ShaderConfig;

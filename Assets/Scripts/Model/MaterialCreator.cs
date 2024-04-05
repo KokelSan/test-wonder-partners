@@ -28,48 +28,24 @@ public class MaterialCreator : MonoBehaviour
     public void StartMaterialCreation(Action onMaterialCreated)
     {
         _onMaterialCreated = onMaterialCreated;
-        SetAllTexturesFullPath();
-
-        if (TryLocateTextures())
-        {
-            
-        }
         
         foreach (TextureDef textureDef in MaterialToCreate.Textures)
         {
             _downloadingTextures.Add(textureDef);
-            StartCoroutine(TextureDownloadService.DownloadTexture(textureDef, OnTextureDownloaded));
+            StartCoroutine(TextureDownloadService.DownloadTexture(textureDef, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix, OnTextureDownloaded));
         }
-    }
-
-    private void SetAllTexturesFullPath()
-    {
-        foreach (TextureDef textureDef in MaterialToCreate.Textures)
-        {
-            textureDef.Path = MaterialToCreate.TexturesCommonPath + textureDef.Type;
-        }
-    }
-    
-    private bool TryLocateTextures()
-    {
-        // foreach (TextureDef textureDef in MaterialToCreate.Textures)
-        // {
-        //     
-        // }
-
-        return false;
     }
 
     private void OnTextureDownloaded(TextureDef textureDef, Texture2D downloadedTexture, string errorMsg)
     {
         if (downloadedTexture == null)
         {
-            Debug.LogError($"Download of texture '{textureDef.Type}' failed: {errorMsg}. \nURL: {textureDef.URL}");
+            Debug.LogError($"Download of texture '{textureDef.Type}' failed: {errorMsg}. \nURL: {textureDef.URL}\n");
             _downloadFailsNb++;
         }
         else
         {
-            Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}");
+            Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}\n");
         }
 
         _downloadingTextures.Remove(textureDef);
@@ -115,7 +91,7 @@ public class MaterialCreator : MonoBehaviour
                 {
                     if (material.HasTexture(shaderTextureProperty.PropertyName))
                     {
-                        Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, shaderTextureProperty.PackingMethod);
+                        Texture2D finalTexture = TexturePackingService.ComputeTexture(downloadedTexture, shaderTextureProperty.PackingMethod, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix);
                         material.SetTexture(shaderTextureProperty.PropertyName, finalTexture);
                     }
                 }
@@ -148,7 +124,8 @@ public class MaterialCreator : MonoBehaviour
         }
         else if (_downloadFailsNb > 0)
         {
-            Debug.LogError($"Material creation ended with {_downloadFailsNb} textures download fails.");
+            string msgEnd = _downloadFailsNb == 1 ? "texture download fail" : "textures download fails";
+            Debug.LogError($"Material creation ended with {_downloadFailsNb} {msgEnd}.");
         }
         else
         {

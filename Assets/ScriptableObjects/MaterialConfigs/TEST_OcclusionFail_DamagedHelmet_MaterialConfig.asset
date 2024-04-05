@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf3fc958f662e8e4699138adba881256, type: 3}
-  m_Name: DamagedHelmet_MaterialConfig
+  m_Name: TEST_OcclusionFail_DamagedHelmet_MaterialConfig
   m_EditorClassIdentifier: 
   Textures:
   - Type: 0
@@ -36,8 +36,7 @@ MonoBehaviour:
   - Type: 4
     Format: 0
     PackingMethod: 0
-    URL: https://firebasestorage.googleapis.com/v0/b/movie-api-recruitment.appspot.com/o/Material_MR
-      (Occlusion).png?alt=media&token=91d2e1a6-50e0-4c0d-8bf0-fbf112a50ebc
+    URL: https://firebasesto
   TexturesDirectory: Assets/Textures/DamagedHelmet
   TexturesNamePrefix: DamagedHelmet_
   ShaderConfig: {fileID: 11400000, guid: 13af9e2f695772c4d93c058e42e74c3d, type: 2}

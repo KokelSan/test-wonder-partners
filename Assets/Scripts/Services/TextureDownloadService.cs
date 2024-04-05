@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public static class TextureDownloadService
 {    
-    public static IEnumerator DownloadTexture(TextureDef textureDef, Action<TextureDef, Texture2D, string> onDownloadComplete)
+    public static IEnumerator DownloadTexture(TextureDef textureDef, string directory, string fileNamePrefix, Action<TextureDef, Texture2D, string> onDownloadComplete)
     {
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(textureDef.URL))
         {
@@ -24,14 +24,10 @@ public static class TextureDownloadService
                 yield break;
             }
 
-            string path = textureDef.Path + textureDef.Extension;
-            if (!FileIOService.TryCreateFile(path, texture.EncodeToPNG(), out string error))
-            {
-                onDownloadComplete?.Invoke(textureDef, null, error);
-                yield break;
-            }
+            string fileName = fileNamePrefix + textureDef.Type + textureDef.Extension;
+            FileIOService.CreateFile(directory, fileName, texture.EncodeToPNG());
             
-            onDownloadComplete?.Invoke(textureDef, texture, string.Empty);
+            onDownloadComplete?.Invoke(textureDef, texture, String.Empty);
         }
     }
 }

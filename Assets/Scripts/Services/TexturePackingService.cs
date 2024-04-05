@@ -1,20 +1,18 @@
-﻿using System;
-using System.IO;
-using UnityEngine;
+﻿using UnityEngine;
 
 public static class TexturePackingService
 {
-        public static Texture2D ComputeTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod)
+        public static Texture2D ComputeTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod, string directory, string fileNamePrefix)
         {
                 if (downloadedTexture.TextureDef.PackingMethod == targetPackingMethod)
                 {
                         return downloadedTexture.Texture;
                 }
                 
-                return TransformTexture(downloadedTexture, targetPackingMethod);
+                return TransformTexture(downloadedTexture, targetPackingMethod, directory, fileNamePrefix);
         }
 
-        private static Texture2D TransformTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod)
+        private static Texture2D TransformTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod, string directory, string fileNamePrefix)
         {
                 Debug.Log($"Transforming texture '{downloadedTexture.TextureDef.Type}' from {downloadedTexture.TextureDef.PackingMethod} to {targetPackingMethod}");
                 
@@ -34,11 +32,9 @@ public static class TexturePackingService
                         }
                         transformedTexture.Apply();
 
-                        string path = downloadedTexture.TextureDef.Path + "_Transformed" + downloadedTexture.TextureDef.Extension;
-                        if (!FileIOService.TryCreateFile(path, transformedTexture.EncodeToPNG(), out string error))
-                        {
-                                Debug.LogError($"An error occured while saving transformed texture: {error}");
-                        }
+                        string fileName = fileNamePrefix + downloadedTexture.TextureDef.Type + "_Transformed" + downloadedTexture.TextureDef.Extension;
+                        FileIOService.CreateFile(directory, fileName, transformedTexture.EncodeToPNG());
+                                
                         return transformedTexture;
                 }
                 return downloadedTexture.Texture;

@@ -7,21 +7,26 @@ public static class FileIOService
 {
         private static List<string> _createdFilePaths = new List<string>();
         
-        public static bool TryCreateFile(string path, byte[] byteArray, out string errorMsg)
+        public static void CreateFile(string directory, string fileName, byte[] byteArray)
         {
+                string path = $"{directory}/{fileName}";
+                
                 try
                 {
+                        if (!File.Exists(directory))
+                        {
+                                Directory.CreateDirectory(directory);
+                        }
+                        
                         File.WriteAllBytes(path, byteArray);
                 }
                 catch (Exception e)
                 {
-                        errorMsg = e.Message;
-                        return false;
+                        Debug.LogError($"File creation for texture '{fileName}' failed: {e.Message}.");
+                        return;
                 }
 
-                errorMsg = string.Empty;
                 _createdFilePaths.Add(path);
-                return true;
         }
         
         public static void DeleteAllCreatedFiles()
