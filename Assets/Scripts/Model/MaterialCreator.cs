@@ -19,7 +19,7 @@ public class MaterialCreator : MonoBehaviour
     [SerializeField] private MaterialConfigSO MaterialToCreate;
 
     private List<TextureDef> _downloadingTextures = new List<TextureDef>();
-    private Dictionary<TextureType, DownloadedTexture> _downloadedTextures = new Dictionary<TextureType, DownloadedTexture>();
+    private List<DownloadedTexture> _downloadedTextures = new List<DownloadedTexture>();
     private int _downloadFailsNb = 0;
     
     private Action _onModelReady;
@@ -47,7 +47,7 @@ public class MaterialCreator : MonoBehaviour
         else
         {
             Debug.Log($"Texture '{textureDef.Type}' downloaded. \nURL: {textureDef.URL}\n");
-            _downloadedTextures.Add(textureDef.Type, new DownloadedTexture(textureDef, downloadedTexture));
+            _downloadedTextures.Add(new DownloadedTexture(textureDef, downloadedTexture));
         }
 
         _downloadingTextures.Remove(textureDef);
@@ -106,8 +106,10 @@ public class MaterialCreator : MonoBehaviour
             globalIlluminationFlags = MaterialToCreate.ShaderConfig.GIFlag,
         };
 
-        foreach (var (textureType, downloadedTexture) in _downloadedTextures)
+        foreach (var downloadedTexture in _downloadedTextures)
         {
+            TextureType textureType = downloadedTexture.TextureDef.Type;
+            
             // Setting the texture
             ShaderTextureProperty shaderTextureProperty = MaterialToCreate.ShaderConfig.TextureProperties.Find(textureProperty => textureProperty.TextureType == textureType);
             if (shaderTextureProperty != null)
