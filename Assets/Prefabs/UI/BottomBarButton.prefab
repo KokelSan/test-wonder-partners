@@ -703,10 +703,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6b98f108728b141bad53b04f8bb94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VisibilityTweenConfig: {fileID: 11400000, guid: 4b3305ee0739d7b41b583c157e739595, type: 2}
-  ActivationButton: {fileID: 8676691412177318869}
+  VisibilityConfig: {fileID: 11400000, guid: 4b3305ee0739d7b41b583c157e739595, type: 2}
   ActiveElements: {fileID: 1327451741477726164}
-  AnimatedBackground: {fileID: 0}
+  ActivationButton: {fileID: 8676691412177318869}
   DisplayNameText: {fileID: 7565048233937428751}
   ActiveImage: {fileID: 4290050086838871052}
   InactiveImage: {fileID: 6030677247556518500}

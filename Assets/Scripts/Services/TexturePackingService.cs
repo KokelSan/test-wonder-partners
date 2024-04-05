@@ -16,7 +16,7 @@ public static class TexturePackingService
 
         private static Texture2D TransformTexture(DownloadedTexture downloadedTexture, PackingMethod targetPackingMethod)
         {
-                Debug.Log($"Transforming texture from {downloadedTexture.TextureDef.PackingMethod} to {targetPackingMethod}");
+                Debug.Log($"Transforming texture '{downloadedTexture.TextureDef.Type}' from {downloadedTexture.TextureDef.PackingMethod} to {targetPackingMethod}");
                 
                 if (downloadedTexture.TextureDef.PackingMethod == PackingMethod.glTF2 && targetPackingMethod == PackingMethod.Standard)
                 {
@@ -35,11 +35,11 @@ public static class TexturePackingService
                         transformedTexture.Apply();
 
                         string path = downloadedTexture.TextureDef.Path + "_Transformed" + downloadedTexture.TextureDef.Extension;
-                        if (FileIOService.TryCreateFile(path, transformedTexture.EncodeToPNG(), out string error))
+                        if (!FileIOService.TryCreateFile(path, transformedTexture.EncodeToPNG(), out string error))
                         {
-                                return transformedTexture;
+                                Debug.LogError($"An error occured while saving transformed texture: {error}");
                         }
-                        Debug.LogError($"An error occured while transforming Texture: {error}");
+                        return transformedTexture;
                 }
                 return downloadedTexture.Texture;
         }

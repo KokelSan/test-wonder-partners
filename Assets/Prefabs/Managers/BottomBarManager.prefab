@@ -115,14 +115,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85a06d1beaf267d449223969fe24fcb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VisibilityTweenConfig: {fileID: 11400000, guid: 705fdf5ced71b6b4d8fbb4f18d6b42a4, type: 2}
-  HideOnStart: 1
+  VisibilityConfig: {fileID: 11400000, guid: 705fdf5ced71b6b4d8fbb4f18d6b42a4, type: 2}
   ButtonsParent: {fileID: 5442715248094138841}
   ButtonPrefab: {fileID: 7793943277605089949, guid: 4883347ea7998554cae49d6920bba4d8, type: 3}
-  ButtonsDefinition:
-  - {fileID: 11400000, guid: 413ee40908a5d834885c9abbcb85134c, type: 2}
-  - {fileID: 11400000, guid: e96a65c8ab2b7824f9dac45a83c98404, type: 2}
-  - {fileID: 11400000, guid: 0332e2370596fb440b610a5989e7e437, type: 2}
 --- !u!1 &4114990494503747427
 GameObject:
   m_ObjectHideFlags: 0

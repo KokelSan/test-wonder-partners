@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4708d5febb914eb39e701c1fa1beb30e, type: 3}
-  m_Name: Buttons_VisibilityTweenConfig
+  m_Name: BottomBar_BaseVisibilityConfig
   m_EditorClassIdentifier: 
   ShowConfig:
-    Ease: 27
-    Duration: 0.3
-  HideConfig:
     Ease: 3
-    Duration: 0.2
+    Duration: 1
+  HideConfig:
+    Ease: 0
+    Duration: 0

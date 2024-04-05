@@ -25,18 +25,17 @@ public struct ShaderColorParameter
 }
 
 /// <summary>
-/// A scriptable object to bind a texture type with the corresponding texture property name in a shader
+/// A scriptable object to bind a general texture type with the corresponding texture property name defined in the shader
 /// </summary>
-[CreateAssetMenu(menuName = "Wonder Partner's/Shader Property Table/New Table",  fileName = "_ShaderPropertyTableSO")]
-public class ShaderDescriptionTableSO : ScriptableObject
+[CreateAssetMenu(menuName = "Wonder Partner's/Shader Config/New Config",  fileName = "_ShaderConfig")]
+public class ShaderConfigSO : ScriptableObject
 {
     public string Name;
     public List<ShaderTextureProperty> TextureProperties;
     
-    [Header("Additional parameters")]
+    [Header("Additional Parameters")]
     public List<ShaderKeywordParameter> KeywordParameters;
     public List<ShaderColorParameter> ColorParameters;
     
     public MaterialGlobalIlluminationFlags GIFlag;
-    
 }

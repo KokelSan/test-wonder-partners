@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ModelBehaviour : MonoBehaviour
 {
-    private ModelMaterialCreator _materialCreator;
-    private ModelViewModifier _viewModifier;
+    private MaterialCreator _materialCreator;
+    private ViewModifier _viewModifier;
 
     public void Initialize(Action onModelReady)
     {

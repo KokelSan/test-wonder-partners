@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 5677588550065235739}
   - component: {fileID: 5283224711577589106}
   - component: {fileID: 8564789511401563854}
-  - component: {fileID: 3653166942162419912}
   - component: {fileID: 4871591238925651247}
+  - component: {fileID: 3653166942162419912}
   m_Layer: 0
   m_Name: DamagedHelmet
   m_TagString: Untagged
@@ -98,6 +98,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb9d5daacfe4f919160a63a52d59f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4871591238925651247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956848098140397537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f675b97a046a4ed7bf7685264565bc1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaterialToCreate: {fileID: 11400000, guid: d56e06062b92f7d41b4e5c84185a3710, type: 2}
 --- !u!114 &3653166942162419912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091de166e497aec4c9be435ebf9fe208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tweenConfig: {fileID: 11400000, guid: 9a24ef875d955f54c9bbbc04a57d962c, type: 2}
+  ModelVisibilityConfig: {fileID: 11400000, guid: 9a24ef875d955f54c9bbbc04a57d962c, type: 2}
   Views:
   - ButtonConfig: {fileID: 11400000, guid: e96a65c8ab2b7824f9dac45a83c98404, type: 2}
     Position: {x: -0.2, y: 0, z: -1}
@@ -124,17 +137,3 @@ MonoBehaviour:
     Position: {x: 0.2, y: 0, z: -1}
     Rotation: {x: 90, y: 89.9, z: 0}
     IsStartingView: 0
---- !u!114 &4871591238925651247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1956848098140397537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f675b97a046a4ed7bf7685264565bc1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TextureConfig: {fileID: 11400000, guid: d56e06062b92f7d41b4e5c84185a3710, type: 2}
-  ShaderDescription: {fileID: 11400000, guid: 13af9e2f695772c4d93c058e42e74c3d, type: 2}

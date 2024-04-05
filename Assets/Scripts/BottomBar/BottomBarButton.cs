@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class BottomBarButton : MonoBehaviour
 {
-    [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
+    [SerializeField] private BaseVisibilityConfigSO VisibilityConfig;
     
-    [SerializeField] private Button ActivationButton;
     [SerializeField] private GameObject ActiveElements;
+    [SerializeField] private Button ActivationButton;
     
     [SerializeField] private TMP_Text DisplayNameText;
     [SerializeField] private Image ActiveImage;
@@ -20,14 +20,13 @@ public class BottomBarButton : MonoBehaviour
 
     public void SetButtonForView(ModelView view, UnityAction onButtonClicked)
     {
-        ButtonConfigSO buttonConfig = view.ButtonConfig;
-        
-        name = $"{buttonConfig.DisplayName}_Button";
-        DisplayNameText.text = buttonConfig.DisplayName;
-        ActiveImage.sprite = buttonConfig.ActiveIcon;
-        InactiveImage.sprite = buttonConfig.InactiveIcon;
-        ActivationButton.onClick.AddListener(onButtonClicked);
         _currentConfig = view.ButtonConfig;
+        
+        name = $"{_currentConfig.DisplayName}_Button";
+        DisplayNameText.text = _currentConfig.DisplayName;
+        ActiveImage.sprite = _currentConfig.ActiveIcon;
+        InactiveImage.sprite = _currentConfig.InactiveIcon;
+        ActivationButton.onClick.AddListener(onButtonClicked);
         
         SetActive(view.IsStartingView);
     }
@@ -36,11 +35,11 @@ public class BottomBarButton : MonoBehaviour
     {
         if (isActive)
         {
-            ActiveElements.transform.DOScale(Vector3.one, VisibilityTweenConfig.ShowConfig.Duration).SetEase(VisibilityTweenConfig.ShowConfig.Ease);
+            ActiveElements.transform.DOScale(Vector3.one, VisibilityConfig.ShowConfig.Duration).SetEase(VisibilityConfig.ShowConfig.Ease);
         }
         else
         {
-            ActiveElements.transform.DOScale(Vector3.zero, VisibilityTweenConfig.HideConfig.Duration).SetEase(VisibilityTweenConfig.HideConfig.Ease);
+            ActiveElements.transform.DOScale(Vector3.zero, VisibilityConfig.HideConfig.Duration).SetEase(VisibilityConfig.HideConfig.Ease);
         }
         
         ActivationButton.interactable = !isActive;

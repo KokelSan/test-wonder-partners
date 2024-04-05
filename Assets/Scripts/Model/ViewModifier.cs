@@ -12,9 +12,9 @@ public class ModelView
     public bool IsStartingView;
 }
 
-public class ModelViewModifier : MonoBehaviour
+public class ViewModifier : MonoBehaviour
 {
-    [SerializeField] private ModelTweenConfigSO tweenConfig;
+    [SerializeField] private ModelVisibilityConfigSO ModelVisibilityConfig;
     public List<ModelView> Views;
 
     private Dictionary<ButtonConfigSO, ModelView> _buttonToViewDict = new Dictionary<ButtonConfigSO, ModelView>();
@@ -35,8 +35,8 @@ public class ModelViewModifier : MonoBehaviour
     {
         if (_buttonToViewDict.TryGetValue(buttonConfig, out ModelView view))
         {
-            transform.DOLocalMove(view.Position, tweenConfig.ViewTransitionConfig.Duration).SetEase(tweenConfig.ViewTransitionConfig.Ease);
-            transform.DOLocalRotate(view.Rotation, tweenConfig.ViewTransitionConfig.Duration).SetEase(tweenConfig.ViewTransitionConfig.Ease);
+            transform.DOLocalMove(view.Position, ModelVisibilityConfig.ViewTransitionConfig.Duration).SetEase(ModelVisibilityConfig.ViewTransitionConfig.Ease);
+            transform.DOLocalRotate(view.Rotation, ModelVisibilityConfig.ViewTransitionConfig.Duration).SetEase(ModelVisibilityConfig.ViewTransitionConfig.Ease);
             return;
         }
         Debug.LogError($"Model View not found for buttonConfig '{buttonConfig.name}'");
@@ -47,15 +47,15 @@ public class ModelViewModifier : MonoBehaviour
     {
         if (isVisible)
         {
-            transform.DOScale(Vector3.one, tweenConfig.ShowConfig.Duration).SetEase(tweenConfig.ShowConfig.Ease);
+            transform.DOScale(Vector3.one, ModelVisibilityConfig.ShowConfig.Duration).SetEase(ModelVisibilityConfig.ShowConfig.Ease);
             return;
         }
-        transform.DOScale(Vector3.zero, tweenConfig.HideConfig.Duration).SetEase(tweenConfig.HideConfig.Ease);
+        transform.DOScale(Vector3.zero, ModelVisibilityConfig.HideConfig.Duration).SetEase(ModelVisibilityConfig.HideConfig.Ease);
     }
 
     public void Destroy()
     {
-        transform.DOScale(Vector3.zero, tweenConfig.HideConfig.Duration).SetEase(tweenConfig.HideConfig.Ease).
+        transform.DOScale(Vector3.zero, ModelVisibilityConfig.HideConfig.Duration).SetEase(ModelVisibilityConfig.HideConfig.Ease).
             OnComplete(() =>
             {
                 Destroy(this);

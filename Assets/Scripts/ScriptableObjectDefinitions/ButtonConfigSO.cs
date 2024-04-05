@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Wonder Partner's/Button Config/New button",  fileName = "_ButtonConfig")]
+[CreateAssetMenu(menuName = "Wonder Partner's/Button Config/New Config",  fileName = "_ButtonConfig")]
 public class ButtonConfigSO : ScriptableObject
 {
     public string DisplayName;

@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BottomBarManager : MonoBehaviour
 {
-    [SerializeField] private VisibilityTweenConfigSO VisibilityTweenConfig;
-    [SerializeField] private bool HideOnStart;
+    [SerializeField] private BaseVisibilityConfigSO VisibilityConfig;
     
     [Header("Buttons instantiation")]
     [SerializeField] private HorizontalLayoutGroup ButtonsParent;
@@ -19,7 +19,7 @@ public class BottomBarManager : MonoBehaviour
 
     private void Start()
     {
-        if(!HideOnStart) return;
+        if(!VisibilityConfig.HideOnStart) return;
         
         _buttonsParentInitialScale = ButtonsParent.transform.localScale;
         ButtonsParent.transform.localScale = Vector3.zero;
@@ -35,7 +35,7 @@ public class BottomBarManager : MonoBehaviour
             if (view.IsStartingView) _currentActiveButtonIndex = index;
             _instantiatedButtons.Add(bottomBarButton);
         }
-        ButtonsParent.transform.DOScale(_buttonsParentInitialScale, VisibilityTweenConfig.ShowConfig.Duration).SetEase(VisibilityTweenConfig.ShowConfig.Ease);
+        ButtonsParent.transform.DOScale(_buttonsParentInitialScale, VisibilityConfig.ShowConfig.Duration).SetEase(VisibilityConfig.ShowConfig.Ease);
     }
 
     private void OnButtonClicked(int buttonIndex, Action<ButtonConfigSO> modelManagerOnClickAction)

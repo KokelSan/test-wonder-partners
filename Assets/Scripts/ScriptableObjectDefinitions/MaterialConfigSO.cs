@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum TextureType
 {
@@ -36,14 +35,19 @@ public class TextureDef
     [HideInInspector] public string Path; // the full path without extension, allowing insertion before extension
 } 
 
-[CreateAssetMenu(menuName = "Wonder Partner's/Model Texture Config/New Config",  fileName = "_ModelTextureConfigSO")]
-public class ModelTextureConfigSO : ScriptableObject
+[CreateAssetMenu(menuName = "Wonder Partner's/Material Config/New Config",  fileName = "_MaterialConfig")]
+public class MaterialConfigSO : ScriptableObject
 {
+    [Header("Textures To Download")]
     public List<TextureDef> Textures;
-    public string SavePath;
     
-    [Tooltip("The final name of the downloaded texture will be TexturesPrefixName + TextureType + Format. For example: DamagedHelmet_BaseMap.png")]
+    [Header("Textures File Creation")]
+    public string TexturesSaveFolder;
+    
+    [Tooltip("The final name of a downloaded texture will be (TexturesSaveFolder/) TexturesPrefixName + TextureType + Extension. For example: DamagedHelmet_BaseMap.png")]
     public string TexturesPrefixName;
+    public string TexturesCommonPath => TexturesSaveFolder + "/" + TexturesPrefixName;
     
-    public string CommonPath => SavePath + TexturesPrefixName;
+    [Header("Shader Config")]
+    public ShaderConfigSO ShaderConfig;
 }

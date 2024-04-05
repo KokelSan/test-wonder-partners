@@ -10,25 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2570a6a69c74ccbbd60881d9b916541, type: 3}
-  m_Name: glTFMetallicRoughness_ShaderPropertyTable
+  m_Name: StandardShader_Emissive_Config
   m_EditorClassIdentifier: 
-  Name: glTF/PbrMetallicRoughness
+  Name: Standard
   TextureProperties:
   - TextureType: 0
     PackingMethod: 0
-    PropertyName: baseColorTexture
+    PropertyName: _MainTex
   - TextureType: 1
     PackingMethod: 0
-    PropertyName: emissiveTexture
+    PropertyName: _EmissionMap
   - TextureType: 2
-    PackingMethod: 1
-    PropertyName: metallicRoughnessTexture
+    PackingMethod: 0
+    PropertyName: _MetallicGlossMap
   - TextureType: 3
     PackingMethod: 0
-    PropertyName: normalTexture
+    PropertyName: _BumpMap
   - TextureType: 4
     PackingMethod: 0
-    PropertyName: occlusionTexture
-  KeywordParameters: []
-  ColorParameters: []
-  GIFlag: 0
+    PropertyName: _OcclusionMap
+  KeywordParameters:
+  - Keyword: _EMISSION
+    Enable: 1
+  ColorParameters:
+  - Name: _EmissionColor
+    Color: {r: 1, g: 1, b: 1, a: 0}
+  GIFlag: 2

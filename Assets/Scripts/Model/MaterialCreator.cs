@@ -14,10 +14,9 @@ public class DownloadedTexture
     }
 }
 
-public class ModelMaterialCreator : MonoBehaviour
+public class MaterialCreator : MonoBehaviour
 {
-    [SerializeField] private ModelTextureConfigSO TextureConfig;
-    [SerializeField] private ShaderDescriptionTableSO ShaderDescription;
+    [SerializeField] private MaterialConfigSO MaterialToCreate;
 
     private List<TextureDef> _downloadingTextures = new List<TextureDef>();
     private Dictionary<TextureType, DownloadedTexture> _downloadedTextures = new Dictionary<TextureType, DownloadedTexture>();
@@ -36,7 +35,7 @@ public class ModelMaterialCreator : MonoBehaviour
             
         }
         
-        foreach (TextureDef textureDef in TextureConfig.Textures)
+        foreach (TextureDef textureDef in MaterialToCreate.Textures)
         {
             _downloadingTextures.Add(textureDef);
             StartCoroutine(TextureDownloadService.DownloadTexture(textureDef, OnTextureDownloaded));
@@ -45,15 +44,15 @@ public class ModelMaterialCreator : MonoBehaviour
 
     private void SetAllTexturesFullPath()
     {
-        foreach (TextureDef textureDef in TextureConfig.Textures)
+        foreach (TextureDef textureDef in MaterialToCreate.Textures)
         {
-            textureDef.Path = TextureConfig.CommonPath + textureDef.Type;
+            textureDef.Path = MaterialToCreate.TexturesCommonPath + textureDef.Type;
         }
     }
     
     private bool TryLocateTextures()
     {
-        // foreach (TextureDef textureDef in TextureConfig.Textures)
+        // foreach (TextureDef textureDef in MaterialToCreate.Textures)
         // {
         //     
         // }
@@ -84,16 +83,16 @@ public class ModelMaterialCreator : MonoBehaviour
 
     private void CreateMaterial()
     {
-        if (ShaderDescription == null)
+        if (MaterialToCreate.ShaderConfig == null)
         {
             Debug.LogError($"No Shader Description, material creation aborted.");
             return;
         }
         
-        Shader shader = Shader.Find(ShaderDescription.Name);
+        Shader shader = Shader.Find(MaterialToCreate.ShaderConfig.Name);
         if (shader == null)
         {
-            Debug.LogError($"Shader '{ShaderDescription.Name}' is not valid, material creation aborted.");
+            Debug.LogError($"Shader '{MaterialToCreate.ShaderConfig.Name}' is not valid, material creation aborted.");
             return;
         }
         
@@ -105,10 +104,10 @@ public class ModelMaterialCreator : MonoBehaviour
         
         Material material = new Material(shader)
         {
-            globalIlluminationFlags = ShaderDescription.GIFlag,
+            globalIlluminationFlags = MaterialToCreate.ShaderConfig.GIFlag,
         };
 
-        foreach (ShaderTextureProperty shaderTextureProperty in ShaderDescription.TextureProperties)
+        foreach (ShaderTextureProperty shaderTextureProperty in MaterialToCreate.ShaderConfig.TextureProperties)
         {
             if (_downloadedTextures.TryGetValue(shaderTextureProperty.TextureType, out DownloadedTexture downloadedTexture))
             {
@@ -123,7 +122,7 @@ public class ModelMaterialCreator : MonoBehaviour
             }
         }
         
-        foreach (var keywordParam in ShaderDescription.KeywordParameters)
+        foreach (var keywordParam in MaterialToCreate.ShaderConfig.KeywordParameters)
         {
             if (keywordParam.Enable)
             {
@@ -133,7 +132,7 @@ public class ModelMaterialCreator : MonoBehaviour
             material.DisableKeyword(keywordParam.Keyword);
         }
         
-        foreach (var colorParam in ShaderDescription.ColorParameters)
+        foreach (var colorParam in MaterialToCreate.ShaderConfig.ColorParameters)
         {
             if (material.HasColor(colorParam.Name))
             {
@@ -143,7 +142,7 @@ public class ModelMaterialCreator : MonoBehaviour
         
         renderer.material = material;
         
-        if (_downloadFailsNb == TextureConfig.Textures.Count)
+        if (_downloadFailsNb == MaterialToCreate.Textures.Count)
         {
             Debug.LogError($"Material creation error: all textures download failed.");
         }
