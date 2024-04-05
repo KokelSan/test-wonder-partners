@@ -11,6 +11,11 @@ public class ModelBehaviour : MonoBehaviour
     {
         transform.localScale = Vector3.zero;
         
+        if (!TryGetComponent(out _viewModifier))
+        {
+            Debug.LogWarning($"There is no ViewModifier component on model '{name}'");
+        }
+        
         if (TryGetComponent(out _materialCreator))
         {
             _materialCreator.StartMaterialCreation(onModelReady);
@@ -18,11 +23,6 @@ public class ModelBehaviour : MonoBehaviour
         else
         {
             Debug.LogWarning($"There is no MaterialCreator component on model '{name}'");
-        }
-        
-        if (!TryGetComponent(out _viewModifier))
-        {
-            Debug.LogWarning($"There is no ViewModifier component on model '{name}'");
         }
     }
     

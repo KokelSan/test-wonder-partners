@@ -10,13 +10,14 @@ public class ModelManager : MonoBehaviour
 
     private void Start()
     {
-        LoadModel(0);
-
         _bottomBarManager = FindObjectOfType<BottomBarManager>();
         if (_bottomBarManager == null)
         {
             Debug.LogError("There is no Bottom Bar Manager in the scene!");
         }
+        _bottomBarManager.Initialize();
+        
+        LoadModel(0);
     }
 
     private void LoadModel(int index)
@@ -42,6 +43,7 @@ public class ModelManager : MonoBehaviour
 
         if(_currentModel != null) _currentModel.RequestDestroy();
         _currentModel = Instantiate(modelPrefab, transform);
+        _currentModel.name = modelPrefab.name;
         _currentModel.Initialize(OnModelReady);
     }     
 

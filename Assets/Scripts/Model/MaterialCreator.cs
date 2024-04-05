@@ -24,7 +24,7 @@ public class MaterialCreator : MonoBehaviour
     
     private Action _onModelReady;
 
-    private bool DownloadComplete => _downloadingTextures.Count == 0;
+    private bool DownloadIsComplete => _downloadedTextures.Count + _downloadFailsNb == MaterialToCreate.Textures.Count;
     
     public void StartMaterialCreation(Action onModelReady)
     {
@@ -32,6 +32,16 @@ public class MaterialCreator : MonoBehaviour
         
         foreach (TextureDef textureDef in MaterialToCreate.Textures)
         {
+            string path = $"{MaterialToCreate.TexturesDirectory}/{MaterialToCreate.TexturesNamePrefix}{textureDef.Type}{textureDef.Extension}";
+            if (FileIOService.TryLoadImage(path, out Texture2D texture))
+            {
+                Debug.Log($"Texture '{textureDef.Type}' already downloaded, loading it from disk.");
+                _downloadedTextures.Add(new DownloadedTexture(textureDef, texture));
+                FileIOService.RegisterDeletableFilePath(path);
+                CheckIfDownloadIsComplete();
+                continue;
+            }
+            
             _downloadingTextures.Add(textureDef);
             StartCoroutine(TextureDownloadService.DownloadTexture(textureDef, MaterialToCreate.TexturesDirectory, MaterialToCreate.TexturesNamePrefix, OnTextureDownloaded));
         }
@@ -51,8 +61,12 @@ public class MaterialCreator : MonoBehaviour
         }
 
         _downloadingTextures.Remove(textureDef);
-        
-        if (DownloadComplete)
+        CheckIfDownloadIsComplete();
+    }
+
+    private void CheckIfDownloadIsComplete()
+    {
+        if (DownloadIsComplete)
         {
             if (_downloadFailsNb == MaterialToCreate.Textures.Count)
             {
@@ -68,7 +82,7 @@ public class MaterialCreator : MonoBehaviour
             }
             else
             {
-                Debug.Log($"All {MaterialToCreate.Textures.Count} textures have been successfully downloaded.");
+                Debug.Log($"All {MaterialToCreate.Textures.Count} textures have been successfully loaded.");
             }
             
             CreateMaterialIfPossible();

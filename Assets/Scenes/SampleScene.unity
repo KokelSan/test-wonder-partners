@@ -694,6 +694,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BottomBarManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3793398814868618741, guid: 5b256b829cb2f1646a09ce29ff8672c6, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 4421733951507100420, guid: 5b256b829cb2f1646a09ce29ff8672c6, type: 3}
       propertyPath: m_Pivot.x
       value: 0

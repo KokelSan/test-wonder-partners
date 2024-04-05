@@ -28,6 +28,32 @@ public static class FileIOService
 
                 _createdFilePaths.Add(path);
         }
+
+        public static bool TryLoadImage(string path, out Texture2D texture)
+        {
+                texture = new Texture2D(2, 2);
+                if (File.Exists(path))
+                {
+                        try
+                        {
+                                byte[] bytes = File.ReadAllBytes(path);
+                                if (texture.LoadImage(bytes))
+                                {
+                                        return true;
+                                }
+                        }
+                        catch (Exception e)
+                        {
+                                Debug.LogError($"Failed to load image at '{path}': {e.Message}.");
+                        }
+                }
+                return false;
+        }
+
+        public static void RegisterDeletableFilePath(String path)
+        {
+                _createdFilePaths.Add(path);
+        }
         
         public static void DeleteAllCreatedFiles()
         {

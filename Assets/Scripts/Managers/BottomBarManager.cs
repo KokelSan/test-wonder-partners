@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class BottomBarManager : MonoBehaviour
@@ -17,11 +16,11 @@ public class BottomBarManager : MonoBehaviour
     private List<BottomBarButton> _instantiatedButtons = new List<BottomBarButton>();
     private int _currentActiveButtonIndex = 0;
 
-    private void Start()
+    public void Initialize()
     {
-        if(!VisibilityConfig.HideOnStart) return;
-        
         _buttonsParentInitialScale = ButtonsParent.transform.localScale;
+        
+        if(!VisibilityConfig.HideOnStart) return;
         ButtonsParent.transform.localScale = Vector3.zero;
     }
 
