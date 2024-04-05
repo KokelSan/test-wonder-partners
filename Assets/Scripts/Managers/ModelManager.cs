@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class ModelManager : MonoBehaviour
 {
-    [SerializeField] private bool DeleteCreatedFilesOnQuit = true;
-    
-    [Space]
     [SerializeField] private List<ModelBehaviour> ModelPrefabs;
     
     private BottomBarManager _bottomBarManager;
@@ -75,10 +72,5 @@ public class ModelManager : MonoBehaviour
     private void OnButtonClicked(ButtonConfigSO buttonConfig)
     {
         _currentModel.RequestViewModification(buttonConfig);
-    }
-
-    private void OnDestroy()
-    {
-        if(DeleteCreatedFilesOnQuit) FileIOService.DeleteAllCreatedFiles();
     }
 }
