@@ -2,6 +2,7 @@
 
 ## Introduction
 This test was very enjoyable to work on. I never used Unity's web requests before and I really liked to get to discover them. As it will be explained later, the test is not 100% complete as the material created for the model is not exactly as it should be. But in term of code I a am very satisfied of what I produced. I tried to create a system that is easily expandable, particularly by using scriptable objects. 
+The app has been created and tested with the "Galaxy S10e" simulated screen device.
 
 ## Global Architecture
 First of all, I need to explain some of my naming conventions/habits:
@@ -64,3 +65,6 @@ I presume that my texture adaptation is not the correct one as there are no refl
 
 ## Interview result and debrief
 https://wonderpartners.notion.site/Th-o-KOKEL-855fd33751d7476b97be796046f9c29f
+- I was so focused on the material creation (and its non-working problem) that I totally forgot an essential point: the responsiveness of the UI. I worked with only one simulated screen (Galaxy S10e) and forgot to try with other ones.
+- The missing of some keywords is due to my lack of knowledge regarding the shader system in Unity, I confess that.
+- For my defense, the glTF2 documentation seemed partly wrong in its explanation of the encoding of the Metallic Roughness texture (https://github.com/sbtron/glTF/blob/30de0b365d1566b1bbd8b9c140f9e995d3203226/specification/2.0/README.md#pbrmetallicroughnessmetallicroughnesstexture), because it mentions that the Metallic is in the R channel but according to the provided correction of the test it is in the B channel. The code modification and new attempts prove that it is indeed in B.
