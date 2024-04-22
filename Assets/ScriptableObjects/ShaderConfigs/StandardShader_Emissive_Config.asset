@@ -33,6 +33,15 @@ MonoBehaviour:
   - PropertyName: _EMISSION
     RelatedTexture: 1
     Enable: 1
+  - PropertyName: _METALLICGLOSSMAP
+    RelatedTexture: 2
+    Enable: 1
+  - PropertyName: _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+    RelatedTexture: 2
+    Enable: 1
+  - PropertyName: _NORMALMAP
+    RelatedTexture: 3
+    Enable: 1
   ColorProperties:
   - PropertyName: _EmissionColor
     RelatedTexture: 1

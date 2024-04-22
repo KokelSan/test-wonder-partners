@@ -26,7 +26,7 @@ public static class TexturePackingService
                                 for (int x = 0; x < originalTexture.width; x++)
                                 {
                                         Color originalColor = originalTexture.GetPixel(x, y);
-                                        Color transformedColor = new Color(originalColor.r, originalColor.g, originalColor.b, originalColor.g);
+                                        Color transformedColor = new Color(originalColor.b, 0, 0, -originalColor.g);
                                         transformedTexture.SetPixel(x, y, transformedColor);
                                 }
                         }

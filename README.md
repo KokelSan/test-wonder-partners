@@ -61,3 +61,6 @@ The simple was made to be simple, so adding a new model to be interacted with is
 There is one major issue that annoys me with this project : i did not manage to get the targeted result for tha model's material (as a target I take the imported textured model).
 I took the information that the packing of the MetallicRoughness texture was not the same and that it needed some conversion/adaptation, which is, according to my researches and the glTF2.0 docs, putting the G canal of the texture into the A canal (MetallicRoughness is coded on RG__ in glTF2.0 while it is on R__A for the Standard Shader).
 I presume that my texture adaptation is not the correct one as there are no reflexions on the model while using it. But after some tests, I discovered that there was reflexions while using the "raw" downloaded glTF2.0 texture but those reflexions appear only after tweaking a variable (no matter what variable, even for a non-metallic related one) in the material's inspector.
+
+## Interview result and debrief
+https://wonderpartners.notion.site/Th-o-KOKEL-855fd33751d7476b97be796046f9c29f
